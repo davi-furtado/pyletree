@@ -1,0 +1,24 @@
+[build-system]
+requires = ['setuptools>=61.0']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'pyletree'
+version = '1.0.0'
+description = 'Generate directory tree diagrams from the command line'
+readme = 'README.md'
+license = { file = 'LICENSE' }
+authors = [
+    { name = 'Davi Reis Furtado' },
+    { name = 'Leodanis Pozo Ramos' }
+]
+requires-python = '>=3.8'
+dependencies = [
+    'pathspec'
+]
+
+[project.scripts]
+pyletree = 'pyletree.__main__:main'
+
+[project.urls]
+Homepage = 'https://github.com/davi-furtado/pyletree'
