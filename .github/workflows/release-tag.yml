@@ -19,22 +19,59 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Get versions
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Get versions (robust)
         id: version
         run: |
-          OLD=$(git show HEAD^:pyproject.toml | grep '^version' | head -n 1 | sed 's/.*= *"//;s/"//')
-          NEW=$(grep '^version' pyproject.toml | head -n 1 | sed 's/.*= *"//;s/"//')
+          OLD=$(python - <<EOF
+import tomllib
+import subprocess
+
+try:
+    content = subprocess.check_output(["git", "show", "HEAD^:pyproject.toml"]).decode()
+    data = tomllib.loads(content)
+    print(data["project"]["version"])
+except Exception:
+    print("")
+EOF
+          )
+
+          NEW=$(python - <<EOF
+import tomllib
+
+with open("pyproject.toml", "rb") as f:
+    data = tomllib.load(f)
+
+print(data["project"]["version"])
+EOF
+          )
 
           echo "old=$OLD" >> $GITHUB_OUTPUT
           echo "new=$NEW" >> $GITHUB_OUTPUT
 
       - name: Stop if no change
         if: steps.version.outputs.old == steps.version.outputs.new
-        run: exit 0
+        run: echo "Version not changed" && exit 0
 
       - name: Create and push tag
         run: |
-          VERSION=${{ steps.version.outputs.new }}
+          VERSION="${{ steps.version.outputs.new }}"
+
+          echo "Version: $VERSION"
+
+          if [ -z "$VERSION" ]; then
+            echo "Version is empty"
+            exit 1
+          fi
+
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "Tag already exists"
+            exit 0
+          fi
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
