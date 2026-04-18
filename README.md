@@ -176,7 +176,7 @@ project/
 
 ### 1.1.0
 
-- Removed `-o --output-file` option
+- Removed `-o` / `--output-file` option
 - Added `FileTree` class for programmatic usage in Python scripts.
 
 ### 1.0.0
