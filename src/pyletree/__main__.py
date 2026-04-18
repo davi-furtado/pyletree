@@ -4,7 +4,7 @@ import pathlib
 import sys
 
 from .cli import parse_cmd_line_arguments
-from .pyletree import DirectoryTree
+from .pyletree import FileTree
 
 
 def main() -> None:
@@ -20,7 +20,7 @@ def main() -> None:
         sys.exit(1)
 
     try:
-        tree = DirectoryTree(
+        tree = FileTree(
             root_dir=root_dir,
             dir_only=args.dir_only,
             files_only=args.files_only,
@@ -30,10 +30,16 @@ def main() -> None:
             ignore=args.ignore,
             use_gitignore=args.gitignore,
             depth_level=args.depth_level,
-            output_file=args.output_file,
         )
 
-        tree.generate()
+        if args.output_file:
+            with open(args.output_file, 'w', encoding='utf-8') as f:
+                f.write('```\n')
+                f.write(str(tree) + '\n')
+                f.write('```\n')
+        else:
+            for line in tree:
+                print(line)
 
     except KeyboardInterrupt:
         print('\nOperation cancelled.', file=sys.stderr)
@@ -42,3 +48,6 @@ def main() -> None:
     except Exception as e:
         print(f'Error: {e}', file=sys.stderr)
         sys.exit(1)
+
+if __name__ == '__main__':
+    main()

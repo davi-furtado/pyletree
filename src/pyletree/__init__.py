@@ -2,6 +2,8 @@
 
 from importlib.metadata import version
 
-__all__ = ['__version__']
+from .pyletree import FileTree
+
+__all__ = ['__version__', 'FileTree']
 
 __version__ = version('pyletree')

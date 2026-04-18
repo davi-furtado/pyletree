@@ -3,7 +3,7 @@
   
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-1.0.0-orange">
+  <img src="https://img.shields.io/badge/version-1.1.0-orange">
 </div>
 
 <p align="right"><i>Pyletree is a simple and fast CLI tool to generate directory tree diagrams.</i></p>
@@ -64,10 +64,6 @@ pyletree -h
 
 - `-dl`, `--depth-level N` Limit depth
 
-### Output
-
-- `-o`, `--output-file FILE` Save output to file (Markdown format)
-
 ## Examples
 
 Basic:
@@ -112,10 +108,30 @@ No pipes mode:
 pyletree . -n
 ```
 
-Save to file:
+## Python API
 
-```bash
-pyletree . -o tree.md
+You can also use Pyletree programmatically in your own Python code using the `FileTree` class. It returns an iterable that can also be printed directly:
+
+```python
+from pyletree import FileTree
+
+# Create a tree for the current directory
+tree = FileTree()
+
+# Print the tree directly
+print(tree)
+
+# Or iterate over its lines
+for line in tree:
+    print(line)
+
+# You can configure it with the same options of the CLI
+custom_tree = FileTree(
+    root_dir='src/',
+    dir_only=True,
+    ignore=['__pycache__']
+)
+print(custom_tree)
 ```
 
 ## Sample Output
@@ -157,6 +173,11 @@ project/
 - Optional compact mode (`--no-pipes`)
 
 ## Release History
+
+### 1.1.0
+
+- Removed `-o --output-file` option
+- Added `FileTree` class for programmatic usage in Python scripts.
 
 ### 1.0.0
 
