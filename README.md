@@ -14,8 +14,18 @@
 
 ## Installation
 
+### From PyPI
+
 ```bash
 pip install pyletree
+```
+
+### Local
+
+```bash
+git clone https://github.com/davi-furtado/pyletree.git
+cd pyletree
+pip install -e .
 ```
 
 ## Usage
@@ -178,12 +188,25 @@ project/
 
 ## Release History
 
-### Upcoming features (v2.0.0)
-- [ ] Tree as a dictionary
-- [ ] Only-text trees
-- [ ] Show the sizes of the files
-- [ ] Ordering by size
-- [ ] File filter
+### Upcoming Features (2.0.0)
+
+#### Visual & Metadata
+
+- [] `-p` | Path Tree: generates a view focused exclusively on the paths of files and directories.
+- [] `-o [N]` | Text-Only Mode: generates the tree in plain text (without special characters). Accepts an optional parameter `N` to define the indentation (default: 2 spaces).
+- [] `-o` | Text-Only Mode: generate trees using standard text characters (no Unicode/icons).
+- [] `-fs` | File Sizes: toggle visibility of individual file sizes.
+- [] `-ds` | Directory Sizes: display cumulative sizes for folders.
+- [] `-bf`/`-sf` | Smart Sorting: order tree entries by size (descending/ascending).
+
+#### Filtering & Data Structures
+
+- [] `-D` | Dictionary format: output the tree structure as a native Python dictionary.
+- [] Global File Filter: support for excluding/including files based on patterns or extensions.
+
+#### API Enhancements
+
+- [] `FileTree.getPath(name)`: new method to programmatically retrieve the full path of a specific file or directory within the tree.
 
 ### 1.1.0
 
