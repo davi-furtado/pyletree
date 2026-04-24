@@ -179,11 +179,11 @@ project/
 ## Release History
 
 ### Upcoming features (v2.0.0)
-[ ] Tree as a dictionary
-[ ] Only-text trees
-[ ] Show the sizes of the files
-[ ] Ordering by size
-[ ] File filter
+- [ ] Tree as a dictionary
+- [ ] Only-text trees
+- [ ] Show the sizes of the files
+- [ ] Ordering by size
+- [ ] File filter
 
 ### 1.1.0
 
