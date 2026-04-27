@@ -1,6 +1,7 @@
 name: Create Tag
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -24,34 +25,9 @@ jobs:
         with:
           python-version: '3.13'
 
-      - name: Get versions (robust)
+      - name: Get versions
         id: version
-        run: |
-          OLD=$(python - <<EOF
-import tomllib
-import subprocess
-
-try:
-    content = subprocess.check_output(["git", "show", "HEAD^:pyproject.toml"]).decode()
-    data = tomllib.loads(content)
-    print(data["project"]["version"])
-except Exception:
-    print("")
-EOF
-          )
-
-          NEW=$(python - <<EOF
-import tomllib
-
-with open("pyproject.toml", "rb") as f:
-    data = tomllib.load(f)
-
-print(data["project"]["version"])
-EOF
-          )
-
-          echo "old=$OLD" >> $GITHUB_OUTPUT
-          echo "new=$NEW" >> $GITHUB_OUTPUT
+        run: python3 .github/workflows/catch_version.py
 
       - name: Stop if no change
         if: steps.version.outputs.old == steps.version.outputs.new
