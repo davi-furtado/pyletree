@@ -4,9 +4,9 @@ Useful for determining if a new release tag should be created.
 '''
 
 import sys
+import os
 import tomllib
 import subprocess
-from pathlib import Path
 
 
 def get_pyproject_version():
@@ -29,6 +29,17 @@ def get_latest_tag_version():
         return None
 
 
+def set_output(name, value):
+    '''Set GitHub Actions output using Environment Files (new method).'''
+    github_output = os.getenv('GITHUB_OUTPUT')
+    if github_output:
+        with open(github_output, 'a') as f:
+            f.write(f'{name}={value}\n')
+    else:
+        # Fallback for local testing
+        print(f'::set-output name={name}::{value}')
+
+
 def main():
     pyproject_version = get_pyproject_version()
     latest_tag_version = get_latest_tag_version()
@@ -38,19 +49,19 @@ def main():
 
     if latest_tag_version is None:
         print('✓ No tags found. Ready to create first tag.')
-        print(f'::set-output name=old::{latest_tag_version or ''}')
-        print(f'::set-output name=new::{pyproject_version}')
+        set_output('old', latest_tag_version or '')
+        set_output('new', pyproject_version)
         return 0
 
     if pyproject_version != latest_tag_version:
         print(f'✓ Version changed! Ready to create tag v{pyproject_version}')
-        print(f'::set-output name=old::{latest_tag_version}')
-        print(f'::set-output name=new::{pyproject_version}')
+        set_output('old', latest_tag_version)
+        set_output('new', pyproject_version)
         return 0
     else:
         print(f'✗ Version not changed ({pyproject_version})')
-        print(f'::set-output name=old::{latest_tag_version}')
-        print(f'::set-output name=new::{pyproject_version}')
+        set_output('old', latest_tag_version)
+        set_output('new', pyproject_version)
         return 1
 
 
