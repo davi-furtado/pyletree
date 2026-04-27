@@ -1,9 +1,9 @@
 <div align="center">
   <h1 align="center">Pyletree</h1>
-  
+
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-1.1.0-orange">
+  <img src="https://img.shields.io/badge/version-2.0.0-orange">
 
   <img src="https://img.shields.io/badge/python-3670A0?logo=python&logoColor=ffdd54">
   <img src="https://img.shields.io/badge/pypi-%23ececec.svg?logo=pypi&logoColor=1f73b7">
@@ -11,6 +11,25 @@
 </div>
 
 <p align="right"><i>Pyletree is a simple and fast CLI tool to generate directory tree diagrams.</i></p>
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Options](#options)
+  - [General](#general)
+  - [Modes](#modes)
+  - [Ordering](#ordering)
+  - [Display](#display)
+  - [Ignoring](#ignoring)
+  - [Depth](#depth)
+- [Examples](#examples)
+- [Python API](#python-api)
+- [Sample Output](#sample-output)
+- [Features](#features)
+- [Release History](#release-history)
+- [Authors](#authors)
+- [License](#license)
 
 ## Installation
 
@@ -55,13 +74,13 @@ pyletree -h
 
 ### Modes
 
-- `-d`, `--dir-only` Show directories only
-- `-f`, `--files-only` Show files only
+- `-do`, `--dir-only` Show directories only
+- `-fo`, `--files-only` Show files only
 
 ### Ordering
 
-- `-df`, `--dirs-first` List directories before files
-- `-ff`, `--files-first` List files before directories
+- `-d`, `--dirs-first` List directories before files
+- `-f`, `--files-first` List files before directories
 
 > Alphabetical order is always applied as base sorting.
 
@@ -71,8 +90,9 @@ pyletree -h
 
 ### Ignoring
 
+- `-g [DIR_OR_FILE ...]`, `--git [DIR_OR_FILE ...]` Ignore `.git` folder and respect rules from given `.gitignore` paths/dirs (defaults to current dir if omitted but flag is used)
+- `-gi [DIR_OR_FILE ...]`, `--gitignore [DIR_OR_FILE ...]` Respect `.gitignore` rules from given paths/dirs (defaults to current dir if omitted)
 - `-i`, `--ignore PATTERN [PATTERN ...]` Ignore files/directories
-- `-gi`, `--gitignore` Respect `.gitignore` rules
 
 ### Depth
 
@@ -89,13 +109,13 @@ pyletree
 Directories first:
 
 ```bash
-pyletree . -df
+pyletree . -d
 ```
 
 Files only:
 
 ```bash
-pyletree . -f
+pyletree . -fo
 ```
 
 Limit depth:
@@ -188,25 +208,28 @@ project/
 
 ## Release History
 
-### Upcoming Features (2.0.0)
+### 2.0.0
 
 #### Visual & Metadata
 
-- [ ] `-p` | Path Tree: generates a view focused exclusively on the paths of files and directories.
-- [ ] `-o [N]` | Text-Only Mode: generates the tree in plain text (without special characters). Accepts an optional parameter `N` to define the indentation (default: 2 spaces).
-- [ ] `-o` | Text-Only Mode: generate trees using standard text characters (no Unicode/icons).
-- [ ] `-fs` | File Sizes: toggle visibility of individual file sizes.
-- [ ] `-ds` | Directory Sizes: display cumulative sizes for folders.
-- [ ] `-bf`/`-sf` | Smart Sorting: order tree entries by size (descending/ascending).
+- `-p`/`--path-tree` | Path Tree: generates a view focused exclusively on the paths of files and directories.
+- `-o [N]` | Text-Only Mode: generates the tree in plain text (without special characters). Accepts an optional parameter `N` to define the indentation (default: 2 spaces). Can't be used with `-n`.
+- `-fs`/`--file-size` | File Sizes: toggle visibility of individual file sizes.
+- `-ds`/`--dir-size` | Directory Sizes: display cumulative sizes for folders.
+- [`-b`/`--big-first` | `-s`/`--small-first`] | Smart Sorting: order tree entries by size (descending/ascending).
 
 #### Filtering & Data Structures
 
-- [ ] `-D` | Dictionary format: output the tree structure as a native Python dictionary.
-- [ ] Global File Filter: support for excluding/including files based on patterns or extensions.
+- `-dt`/`--dict-tree` | Dictionary format: output the tree structure as a native Python dictionary.
+- Global File Filter: support for excluding/including files based on patterns or extensions.
+- Add patterns to `-i` / `--ignore` option.
 
 #### API Enhancements
 
-- [ ] `FileTree.getPath(name)`: new method to programmatically retrieve the full path of a specific file or directory within the tree.
+- `FileTree.getPath(name)`: new method to programmatically retrieve the full path of a specific file or directory within the tree.
+- Add `dict(FileTree)` method to convert the tree to a dictionary.
+- Add `FileTree.getTree()` method to convert the tree to a string.
+- Add `FileTree.getDictTree()` method to convert the tree to a dictionary.
 
 ### 1.1.0
 
