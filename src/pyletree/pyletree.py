@@ -76,13 +76,19 @@ class FileTree:
         self._size_cache = {}
         self._gitignore_list = []
         
-        self._ignore_spec = pathspec.PathSpec.from_lines('gitwildmatch', ignore) if ignore else None
-        self._filter_spec = pathspec.PathSpec.from_lines('gitwildmatch', filter_file) if filter_file else None
+        # Initialize spec variables
+        if ignore:
+            self._ignore_spec = pathspec.PathSpec.from_lines('gitwildmatch', ignore)
+        else:
+            self._ignore_spec = None
+            
+        if filter_file:
+            self._filter_spec = pathspec.PathSpec.from_lines('gitwildmatch', filter_file)
+        else:
+            self._filter_spec = None
 
         if use_gitignore is not False:
             try:
-                import pathspec
-                
                 # Normalize to list
                 if use_gitignore is True:
                     gis = [self._root_dir]

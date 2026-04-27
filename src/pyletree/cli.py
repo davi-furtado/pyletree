@@ -1,6 +1,7 @@
 '''This module provides the Pyletree CLI.'''
 
 import argparse
+import pathlib
 
 from . import __version__
 
@@ -145,8 +146,8 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
         '--git',
         nargs='*',
         default=False,
-        metavar='DIR_OR_FILE',
-        help='ignore .git folder and use .gitignore from given paths (defaults to current directory if omitted but flag is present)',
+        metavar='DIR',
+        help='ignore .git folder and use .gitignore from given directories or directories containing .git (defaults to current directory if omitted but flag is present)',
     )
 
     parser.add_argument(
@@ -165,6 +166,39 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
     )
 
     args = parser.parse_args()
+
+    # Validate -g/--git option: must be directories only
+    if args.git is not False:
+        if args.git:  # If specific paths provided
+            for path_str in args.git:
+                path = pathlib.Path(path_str).resolve()
+                if not path.exists():
+                    parser.error(f'--git path does not exist: {path_str}')
+                if not path.is_dir():
+                    parser.error(f'--git option only accepts directories: {path_str}')
+                
+                # Check if it's a .git directory or contains .git
+                git_dir = path if path.name == '.git' else path / '.git'
+                if not git_dir.exists() or not git_dir.is_dir():
+                    parser.error(f'--git path must be a .git directory or contain a .git directory: {path_str}')
+
+    # Validate -gi/--gitignore option: can be files or directories
+    if args.gitignore is not False:
+        if args.gitignore:  # If specific paths provided
+            for path_str in args.gitignore:
+                path = pathlib.Path(path_str).resolve()
+                if not path.exists():
+                    parser.error(f'--gitignore path does not exist: {path_str}')
+                
+                # If it's a file, must be named .gitignore
+                if path.is_file() and path.name != '.gitignore':
+                    parser.error(f'--gitignore file must be named .gitignore: {path_str}')
+                
+                # If it's a directory, must contain .gitignore
+                if path.is_dir():
+                    gitignore_file = path / '.gitignore'
+                    if not gitignore_file.exists():
+                        parser.error(f'--gitignore directory must contain a .gitignore file: {path_str}')
 
     if (args.dir_only or args.files_only) and (
         args.dirs_first or args.files_first

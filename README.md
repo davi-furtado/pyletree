@@ -3,7 +3,7 @@
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-2.0.0-orange">
+  <img src="https://img.shields.io/badge/version-2.0.1-orange">
 
   <img src="https://img.shields.io/badge/python-3670A0?logo=python&logoColor=ffdd54">
   <img src="https://img.shields.io/badge/pypi-%23ececec.svg?logo=pypi&logoColor=1f73b7">
@@ -90,7 +90,7 @@ pyletree -h
 
 ### Ignoring
 
-- `-g [DIR_OR_FILE ...]`, `--git [DIR_OR_FILE ...]` Ignore `.git` folder and respect rules from given `.gitignore` paths/dirs (defaults to current dir if omitted but flag is used)
+- `-g [DIR ...]`, `--git [DIR ...]` Ignore `.git` folder and respect rules from given `.git` directories or directories containing `.git` (defaults to current dir if omitted but flag is used)
 - `-gi [DIR_OR_FILE ...]`, `--gitignore [DIR_OR_FILE ...]` Respect `.gitignore` rules from given paths/dirs (defaults to current dir if omitted)
 - `-i`, `--ignore PATTERN [PATTERN ...]` Ignore files/directories
 
@@ -207,6 +207,11 @@ project/
 - Optional compact mode (`--no-pipes`)
 
 ## Release History
+
+### 2.0.1
+
+- `-g`/`--git` now accepts only directories or `.git` directories, or directories containing a `.git` folder.
+- `-gi`/`--gitignore` continues to accept either a `.gitignore` file or the containing directory.
 
 ### 2.0.0
 
