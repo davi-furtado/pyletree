@@ -134,7 +134,7 @@ pyletree . -i node_modules dist .git
 Filter entries with patterns:
 
 ```bash
-pyletree . -fi '*.py' 'docs/'
+pyletree . -fi *.py docs/
 ```
 
 Use `.gitignore`:
@@ -220,7 +220,7 @@ project/
 #### New Features
 
 - `-fi`/`--filter` | Include Patterns: display only files and directories matching gitignore-style patterns. Supports multiple patterns and maintains tree hierarchy by including parent directories of matching files.
-  - Example: `pyletree . -fi '*.py' 'src/'`
+  - Example: `pyletree . -fi *.py src/`
   - Smart directory inclusion: shows parent folders even if they don't match the pattern directly
   - Caching optimization for large directory trees
 
