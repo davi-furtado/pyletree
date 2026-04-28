@@ -125,11 +125,12 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        '-fi',
         '--filter',
         metavar='PATTERN',
         nargs='*',
         default=None,
-        help='include files based on patterns or extensions',
+        help='include only files or directories matching gitignore-style patterns',
     )
 
     parser.add_argument(

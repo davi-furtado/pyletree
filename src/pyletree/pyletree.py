@@ -49,7 +49,7 @@ class FileTree:
         file_size: bool = False,
         dir_size: bool = False,
         sort_size: Optional[str] = None,
-        filter_file: Optional[List[str]] = None,
+        filter: Optional[List[str]] = None,
         reverse: bool = False,
     ) -> None:
         if isinstance(root_dir, str):
@@ -75,6 +75,7 @@ class FileTree:
 
         self._size_cache = {}
         self._gitignore_list = []
+        self._filter_cache = {}
         
         # Initialize spec variables
         if ignore:
@@ -82,8 +83,8 @@ class FileTree:
         else:
             self._ignore_spec = None
             
-        if filter_file:
-            self._filter_spec = pathspec.PathSpec.from_lines('gitwildmatch', filter_file)
+        if filter:
+            self._filter_spec = pathspec.PathSpec.from_lines('gitwildmatch', filter)
         else:
             self._filter_spec = None
 
@@ -284,10 +285,13 @@ class FileTree:
         if self._ignore_spec and check_spec(self._ignore_spec, rel_str_root):
             return True
 
-        if self._filter_spec and entry.is_file():
-            keep = check_spec(self._filter_spec, rel_str_root)
-            if not keep:
-                return True
+        if self._filter_spec:
+            if entry.is_file():
+                if not check_spec(self._filter_spec, rel_str_root):
+                    return True
+            else:
+                if not check_spec(self._filter_spec, rel_str_root) and not self._has_filtered_descendant(entry):
+                    return True
 
         for gitignore_dir, spec in self._gitignore_list:
             try:
@@ -298,5 +302,33 @@ class FileTree:
                     return True
             except ValueError:
                 pass
+
+        return False
+
+    def _has_filtered_descendant(self, directory: pathlib.Path) -> bool:
+        if directory in self._filter_cache:
+            return self._filter_cache[directory]
+
+        matched = False
+        try:
+            for entry in directory.iterdir():
+                if self._filter_spec is None:
+                    matched = True
+                    break
+
+                entry_resolved = entry.resolve()
+                rel = entry_resolved.relative_to(self._root_dir).as_posix()
+                if self._filter_spec.match_file(rel) or (entry_resolved.is_dir() and self._filter_spec.match_file(rel + '/')):
+                    matched = True
+                    break
+
+                if entry_resolved.is_dir() and self._has_filtered_descendant(entry_resolved):
+                    matched = True
+                    break
+        except (PermissionError, FileNotFoundError, OSError):
+            matched = False
+
+        self._filter_cache[directory] = matched
+        return matched
 
         return False

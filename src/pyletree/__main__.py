@@ -54,7 +54,7 @@ def main() -> None:
             file_size=args.file_size,
             dir_size=args.dir_size,
             sort_size=sort_size,
-            filter_file=args.filter,
+            filter=args.filter,
             reverse=args.reverse,
         )
 

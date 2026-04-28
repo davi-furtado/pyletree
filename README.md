@@ -3,7 +3,7 @@
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-2.0.1-orange">
+  <img src="https://img.shields.io/badge/version-2.1.0-orange">
 
   <img src="https://img.shields.io/badge/python-3670A0?logo=python&logoColor=ffdd54">
   <img src="https://img.shields.io/badge/pypi-%23ececec.svg?logo=pypi&logoColor=1f73b7">
@@ -93,6 +93,7 @@ pyletree -h
 - `-g [DIR ...]`, `--git [DIR ...]` Ignore `.git` folder and respect rules from given `.git` directories or directories containing `.git` (defaults to current dir if omitted but flag is used)
 - `-gi [DIR_OR_FILE ...]`, `--gitignore [DIR_OR_FILE ...]` Respect `.gitignore` rules from given paths/dirs (defaults to current dir if omitted)
 - `-i`, `--ignore PATTERN [PATTERN ...]` Ignore files/directories
+- `-fi`, `--filter PATTERN [PATTERN ...]` Include only files or directories matching gitignore-style patterns
 
 ### Depth
 
@@ -128,6 +129,12 @@ Ignore entries:
 
 ```bash
 pyletree . -i node_modules dist .git
+```
+
+Filter entries with patterns:
+
+```bash
+pyletree . -fi '*.py' 'docs/'
 ```
 
 Use `.gitignore`:
