@@ -215,6 +215,15 @@ project/
 
 ## Release History
 
+### 2.1.0
+
+#### New Features
+
+- `-fi`/`--filter` | Include Patterns: display only files and directories matching gitignore-style patterns. Supports multiple patterns and maintains tree hierarchy by including parent directories of matching files.
+  - Example: `pyletree . -fi '*.py' 'src/'`
+  - Smart directory inclusion: shows parent folders even if they don't match the pattern directly
+  - Caching optimization for large directory trees
+
 ### 2.0.1
 
 - `-g`/`--git` now accepts only directories or `.git` directories, or directories containing a `.git` folder.
