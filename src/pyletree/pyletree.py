@@ -139,7 +139,8 @@ class FileTree:
         return str(self)
 
     def getDictTree(self) -> dict:
-        return self._build_dict_tree(self._root_dir, 0)
+        root_name = str(self._root_dir) if self._path_tree else (self._root_dir.name or str(self._root_dir))
+        return {root_name: self._build_dict_tree(self._root_dir, 0)}
         
     def _build_dict_tree(self, directory: pathlib.Path, depth: int) -> dict:
         if self._depth_level is not None and depth >= self._depth_level:

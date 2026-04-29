@@ -3,7 +3,7 @@
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-2.1.0-orange">
+  <img src="https://img.shields.io/badge/version-2.2.0-orange">
 
   <img src="https://img.shields.io/badge/python-3670A0?logo=python&logoColor=ffdd54">
   <img src="https://img.shields.io/badge/pypi-%23ececec.svg?logo=pypi&logoColor=1f73b7">
@@ -125,6 +125,12 @@ Limit depth:
 pyletree . -dl 2
 ```
 
+Dictionary output:
+
+```bash
+pyletree . -dt -di 4
+```
+
 Ignore entries:
 
 ```bash
@@ -215,6 +221,15 @@ project/
 
 ## Release History
 
+### 2.2.0
+
+#### Enhancements
+
+- `-dt`/`--dict-tree` | Enhanced Dictionary Output: improved dictionary format with configurable indentation. Now returns `{root: {tree...}}` format and supports custom indentation via `-di N`/`--dict-indent N` (default 2).
+  - Example: `pyletree . -dt -di 4` (4-space indentation)
+  - Example: `pyletree . -dt -di 0` (compact, no indentation)
+  - Better structured output for programmatic use
+
 ### 2.1.0
 
 #### New Features
@@ -241,7 +256,7 @@ project/
 
 #### Filtering & Data Structures
 
-- `-dt`/`--dict-tree` | Dictionary format: output the tree structure as a native Python dictionary.
+- `-dt`/`--dict-tree` | Dictionary format: output the tree structure as a native Python dictionary. Use `-di N`/`--dict-indent N` for indentation (default 2). Format: {root: {tree...}}
 - Global File Filter: support for excluding/including files based on patterns or extensions.
 - Add patterns to `-i` / `--ignore` option.
 

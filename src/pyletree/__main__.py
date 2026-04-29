@@ -59,7 +59,8 @@ def main() -> None:
         )
 
         if args.dict_tree:
-            print(json.dumps(tree.getDictTree(), indent=4))
+            indent = args.dict_indent if args.dict_indent > 0 else None
+            print(json.dumps(tree.getDictTree(), indent=indent))
         else:
             for line in tree:
                 print(line)

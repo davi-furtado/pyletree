@@ -166,6 +166,15 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
         help='output the tree structure as a native Python dictionary (JSON format)',
     )
 
+    parser.add_argument(
+        '-di',
+        '--dict-indent',
+        metavar='N',
+        type=int,
+        default=2,
+        help='indentation for dictionary output (default 2)',
+    )
+
     args = parser.parse_args()
 
     # Validate -g/--git option: must be directories only
