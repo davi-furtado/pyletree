@@ -162,17 +162,11 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
     parser.add_argument(
         '-dt',
         '--dict-tree',
-        action='store_true',
-        help='output the tree structure as a native Python dictionary (JSON format)',
-    )
-
-    parser.add_argument(
-        '-di',
-        '--dict-indent',
         metavar='N',
+        nargs='?',
         type=int,
-        default=2,
-        help='indentation for dictionary output (default 2)',
+        const=2,
+        help='output the tree structure as a native Python dictionary (JSON format). N spaces indent (default 2)',
     )
 
     args = parser.parse_args()

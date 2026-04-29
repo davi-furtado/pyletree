@@ -58,8 +58,8 @@ def main() -> None:
             reverse=args.reverse,
         )
 
-        if args.dict_tree:
-            indent = args.dict_indent if args.dict_indent > 0 else None
+        if args.dict_tree is not None:
+            indent = args.dict_tree if args.dict_tree > 0 else None
             print(json.dumps(tree.getDictTree(), indent=indent))
         else:
             for line in tree:
