@@ -5,6 +5,8 @@
   <img src="https://img.shields.io/badge/license-MIT-green">
   <img src="https://img.shields.io/badge/version-2.2.0-orange">
 
+  <br>
+
   <img src="https://img.shields.io/badge/python-3670A0?logo=python&logoColor=ffdd54">
   <img src="https://img.shields.io/badge/pypi-%23ececec.svg?logo=pypi&logoColor=1f73b7">
   <img src="https://img.shields.io/badge/github%20actions-%232671E5.svg?logo=githubactions&logoColor=white">
