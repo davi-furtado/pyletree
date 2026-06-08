@@ -7,22 +7,4 @@ nav:
   - Usage: usage.md
   - API: api.md
 theme:
-  name: material
-  palette:
-    - scheme: default
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
-    - scheme: slate
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode
-  features:
-    - navigation.tabs
-    - navigation.top
-    - search.highlight
-    - content.code.annotate
+  name: readthedocs

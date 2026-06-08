@@ -25,5 +25,4 @@ Homepage = 'https://github.com/davi-furtado/pyletree'
 [project.optional-dependencies]
 docs = [
     'mkdocs',
-    'mkdocs-material',
 ]
