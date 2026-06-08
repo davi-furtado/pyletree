@@ -1,4 +1,5 @@
 build/
 dist/
+site/
 src/pyletree.egg-info/
 src/pyletree/__pycache__/

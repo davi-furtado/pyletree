@@ -3,7 +3,9 @@
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-2.4.0-orange">
+  <img src="https://img.shields.io/badge/version-2.5.0-orange">
+  <img alt="Docs deploy" src="https://github.com/davi-furtado/pyletree/actions/workflows/docs-deploy.yml/badge.svg">
+  <img alt="Documentation" src="https://img.shields.io/website?url=https://davi-furtado.github.io/pyletree">
 
   <br>
 
@@ -53,6 +55,11 @@ git clone https://github.com/davi-furtado/pyletree.git
 cd pyletree
 pip install -e .
 ```
+
+## Documentation
+
+- Live docs: https://davi-furtado.github.io/pyletree
+- Docs are automatically rebuilt on push to `main` via GitHub Actions.
 
 ## Usage
 
@@ -264,53 +271,53 @@ print(custom_tree)
 
 All parameters (except `root_dir`) are keyword-only:
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `root_dir` | `str \| Path` | `'.'` | Root directory path |
-| `dir_only` | `bool` | `False` | Show directories only |
-| `files_only` | `bool` | `False` | Show files only |
-| `dirs_first` | `bool` | `False` | List directories before files |
-| `files_first` | `bool` | `False` | List files before directories |
-| `no_pipes` | `bool` | `False` | Remove vertical pipes between branches |
-| `ignore` | `list[str] \| None` | `None` | Gitignore-style patterns to ignore |
-| `filter` | `list[str] \| None` | `None` | Gitignore-style patterns to include only |
-| `use_gitignore` | `bool \| str \| Path \| list` | `False` | Respect `.gitignore` rules. `True` uses current dir, or pass path(s) |
-| `depth_level` | `int \| None` | `None` | Limit tree depth |
-| `path_tree` | `bool` | `False` | Display full paths instead of names |
-| `text_only` | `bool` | `False` | Plain text mode (no special characters) |
-| `text_only_indent` | `int` | `2` | Indentation spaces for text-only mode |
-| `file_size` | `bool` | `False` | Show individual file sizes |
-| `dir_size` | `bool` | `False` | Show cumulative directory sizes |
-| `sort_size` | `str \| None` | `None` | Sort by size: `'big'` or `'small'` |
-| `reverse` | `bool` | `False` | Reverse alphabetical sort order |
+| Parameter          | Type                          | Default | Description                                                          |
+| ------------------ | ----------------------------- | ------- | -------------------------------------------------------------------- |
+| `root_dir`         | `str \| Path`                 | `'.'`   | Root directory path                                                  |
+| `dir_only`         | `bool`                        | `False` | Show directories only                                                |
+| `files_only`       | `bool`                        | `False` | Show files only                                                      |
+| `dirs_first`       | `bool`                        | `False` | List directories before files                                        |
+| `files_first`      | `bool`                        | `False` | List files before directories                                        |
+| `no_pipes`         | `bool`                        | `False` | Remove vertical pipes between branches                               |
+| `ignore`           | `list[str] \| None`           | `None`  | Gitignore-style patterns to ignore                                   |
+| `filter_patterns`  | `list[str] \| None`           | `None`  | Gitignore-style patterns to include only                             |
+| `use_gitignore`    | `bool \| str \| Path \| list` | `False` | Respect `.gitignore` rules. `True` uses current dir, or pass path(s) |
+| `depth_level`      | `int \| None`                 | `None`  | Limit tree depth                                                     |
+| `path_tree`        | `bool`                        | `False` | Display full paths instead of names                                  |
+| `text_only`        | `bool`                        | `False` | Plain text mode (no special characters)                              |
+| `text_only_indent` | `int`                         | `2`     | Indentation spaces for text-only mode                                |
+| `file_size`        | `bool`                        | `False` | Show individual file sizes                                           |
+| `dir_size`         | `bool`                        | `False` | Show cumulative directory sizes                                      |
+| `sort_size`        | `str \| None`                 | `None`  | Sort by size: `'big'` or `'small'`                                   |
+| `reverse`          | `bool`                        | `False` | Reverse alphabetical sort order                                      |
 
 ### Methods
 
-#### `getTree() -> str`
+#### `get_tree() -> str`
 
 Returns the tree as a formatted string:
 
 ```python
 tree = FileTree('src/')
-output = tree.getTree()
+output = tree.get_tree()
 ```
 
-#### `getDictTree() -> dict`
+#### `get_dict_tree() -> dict`
 
 Returns the tree as a nested dictionary. Files map to `None` (or their size string if `file_size=True`):
 
 ```python
 tree = FileTree('src/')
-data = tree.getDictTree()
+data = tree.get_dict_tree()
 # {'src/': {'main.py': None, 'utils.py': None}}
 
 # With file sizes
 tree = FileTree('src/', file_size=True)
-data = tree.getDictTree()
+data = tree.get_dict_tree()
 # {'src/': {'main.py': '1.2 KB', 'utils.py': '856 B'}}
 ```
 
-#### `getPath(pattern) -> list[Path]`
+#### `get_path(pattern) -> list[Path]`
 
 Search for files or directories matching a pattern. Returns a list of resolved `Path` objects:
 
@@ -318,13 +325,13 @@ Search for files or directories matching a pattern. Returns a list of resolved `
 tree = FileTree()
 
 # Exact name match
-tree.getPath('main.py')
+tree.get_path('main.py')
 
 # Glob pattern
-tree.getPath('*.py')
+tree.get_path('*.py')
 
 # Path pattern
-tree.getPath('src/*.py')
+tree.get_path('src/*.py')
 ```
 
 #### `dict(tree)`
@@ -477,6 +484,14 @@ project/ (5.6 KB)
 
 ## Release History
 
+### 2.5.0
+
+#### Enhancements
+
+- Added comprehensive docstrings across the `FileTree` class and CLI entry points.
+- Improved typing annotations for `FileTree`, including iterator and mapping return types.
+- Updated public Python API to snake_case method names and aligned README documentation.
+
 ### 2.4.0
 
 #### API Changes
@@ -543,10 +558,10 @@ project/ (5.6 KB)
 
 #### API Enhancements
 
-- `FileTree.getPath(name)`: new method to programmatically retrieve the full path of a specific file or directory within the tree.
+- `FileTree.get_path(pattern)`: new method to programmatically retrieve the full path of a specific file or directory within the tree.
 - Add `dict(FileTree)` method to convert the tree to a dictionary.
-- Add `FileTree.getTree()` method to convert the tree to a string.
-- Add `FileTree.getDictTree()` method to convert the tree to a dictionary.
+- Add `FileTree.get_tree()` method to convert the tree to a string.
+- Add `FileTree.get_dict_tree()` method to convert the tree to a dictionary.
 
 ### 1.1.0
 
@@ -567,3 +582,4 @@ Leodanis Pozo Ramos
 ## License
 
 _Pyletree_ is distributed under the MIT license. See [LICENSE](LICENSE) for more information.
+

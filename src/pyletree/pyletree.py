@@ -1,39 +1,50 @@
-'''This module provides Pyletree main module.'''
+"""This module provides Pyletree main module."""
 
 from __future__ import annotations
 
-import pathlib
 import sys
 from collections import deque
 from fnmatch import fnmatch
-from typing import Deque, List, Optional, Set, Any
+from pathlib import Path
+from typing import Any, Deque, Iterator, KeysView, List, Literal, Optional, Set
 
-import pathspec
+from pathspec import PathSpec
 
-PIPE = '│'
-ELBOW = '└──'
-TEE = '├──'
-PIPE_PREFIX = '│   '
-SPACE_PREFIX = '    '
+PIPE = "│"
+ELBOW = "└──"
+TEE = "├──"
+PIPE_PREFIX = "│   "
+SPACE_PREFIX = "    "
 
 
-def _format_size(size_val: Any) -> str:
+def _format_size(size_val: int | float | str) -> str:
+    """Format a size value as a human-readable string.
+
+    Accepts an integer, float, or already formatted string.
+    Returns a readable unit string such as "1.2 KB" or "3 B".
+    """
     if isinstance(size_val, str):
         return size_val
-    size = float(size_val)
-    for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+    size = float(size_val) if isinstance(size_val, int) else size_val
+    for unit in ["B", "KB", "MB", "GB", "TB"]:
         if size < 1024.0:
-            if unit == 'B':
+            if unit == "B":
                 return f"{int(size)} {unit}"
-            return f"{size:.1f} {unit}".replace('.0 ', ' ')
+            return f"{size:.1f} {unit}".replace(".0 ", " ")
         size /= 1024.0
     return f"{size:.1f} PB"
 
 
 class FileTree:
+    """Generate a filesystem tree representation for a root directory.
+
+    The tree supports filtering, ignoring patterns, sorting, and
+    both textual and dictionary output.
+    """
+
     def __init__(
         self,
-        root_dir: pathlib.Path | str = '.',
+        root_dir: Path | str = ".",
         *,
         dir_only: bool = False,
         files_only: bool = False,
@@ -41,20 +52,25 @@ class FileTree:
         files_first: bool = False,
         no_pipes: bool = False,
         ignore: Optional[List[str]] = None,
-        use_gitignore: Any = False,
+        use_gitignore: bool | str | Path | list[str | Path] = False,
         depth_level: Optional[int] = None,
         path_tree: bool = False,
         text_only: bool = False,
         text_only_indent: int = 2,
         file_size: bool = False,
         dir_size: bool = False,
-        sort_size: Optional[str] = None,
-        filter: Optional[List[str]] = None,
+        sort_size: None | Literal["big", "small"] = None,
+        filter_patterns: Optional[List[str]] = None,
         reverse: bool = False,
     ) -> None:
+        """Initialize a FileTree with directory traversal options.
+
+        Parameters are the same as the CLI options and control how the
+        directory tree is generated, filtered, sorted, and formatted.
+        """
         if isinstance(root_dir, str):
-            root_dir = pathlib.Path(root_dir)
-            
+            root_dir = Path(root_dir)
+
         self.root_dir = root_dir.resolve()
         self.dir_only = dir_only
         self.files_only = files_only
@@ -76,15 +92,17 @@ class FileTree:
         self._size_cache = {}
         self._gitignore_list = []
         self._filter_cache = {}
-        
+
         # Initialize spec variables
         if ignore:
-            self._ignore_spec = pathspec.PathSpec.from_lines('gitwildmatch', ignore)
+            self._ignore_spec = PathSpec.from_lines("gitwildmatch", ignore)
         else:
             self._ignore_spec = None
-            
-        if filter:
-            self._filter_spec = pathspec.PathSpec.from_lines('gitwildmatch', filter)
+
+        if filter_patterns:
+            self._filter_spec = PathSpec.from_lines(
+                "gitwildmatch", filter_patterns
+            )
         else:
             self._filter_spec = None
 
@@ -93,35 +111,48 @@ class FileTree:
                 # Normalize to list
                 if use_gitignore is True:
                     gis = [self.root_dir]
-                elif isinstance(use_gitignore, (str, pathlib.Path)):
+                elif isinstance(use_gitignore, (str, Path)):
                     gis = [use_gitignore]
                 else:
                     gis = use_gitignore
 
                 for item in gis:
-                    item_path = pathlib.Path(item).resolve()
+                    item_path = Path(item).resolve()
                     if item_path.is_file():
                         gitignore_file = item_path
                         gitignore_dir = item_path.parent
                     else:
-                        gitignore_file = item_path / '.gitignore'
+                        gitignore_file = item_path / ".gitignore"
                         gitignore_dir = item_path
 
                     if gitignore_file.exists():
                         patterns = gitignore_file.read_text().splitlines()
-                        spec = pathspec.PathSpec.from_lines('gitwildmatch', patterns)
+                        spec = PathSpec.from_lines("gitwildmatch", patterns)
                         self._gitignore_list.append((gitignore_dir, spec))
             except Exception as e:
-                print(f'Warning: Error parsing gitignore rule: {e}', file=sys.stderr)
+                print(
+                    f"Warning: Error parsing gitignore rule: {e}",
+                    file=sys.stderr,
+                )
 
-    def _get_size(self, path: pathlib.Path) -> int:
+    def _get_size(self, path: Path) -> int:
+        """Return the cached size for a path.
+
+        Compute directories recursively. Files and symlinks return their
+        file size. Directories return the cumulative size of their contents,
+        excluding symlinked children.
+        """
         if path in self._size_cache:
             return self._size_cache[path]
         try:
             if path.is_file() or path.is_symlink():
                 size = path.stat().st_size
             elif path.is_dir():
-                size = sum(self._get_size(p) for p in path.iterdir() if p.exists() and not p.is_symlink())
+                size = sum(
+                    self._get_size(p)
+                    for p in path.iterdir()
+                    if p.exists() and not p.is_symlink()
+                )
             else:
                 size = 0
         except (PermissionError, FileNotFoundError, OSError):
@@ -131,20 +162,28 @@ class FileTree:
 
     @property
     def _tree(self) -> Deque[str]:
-        if not hasattr(self, '_cached_tree'):
+        """Return the cached list of tree lines, building it if needed."""
+        if not hasattr(self, "_cached_tree"):
             self._cached_tree = self._build_tree()
         return self._cached_tree
 
-    def getTree(self) -> str:
+    def get_tree(self) -> str:
+        """Return the generated tree as a single newline-separated string."""
         return str(self)
 
-    def getDictTree(self) -> dict:
-        root_name = str(self.root_dir) if self.path_tree else (self.root_dir.name or str(self.root_dir))
+    def get_dict_tree(self) -> dict[str, Any]:
+        """Return the generated tree as a nested dictionary."""
+        root_name = (
+            str(self.root_dir)
+            if self.path_tree
+            else (self.root_dir.name or str(self.root_dir))
+        )
         return {root_name: self._build_dict_tree(self.root_dir, 0)}
-        
-    def _build_dict_tree(self, directory: pathlib.Path, depth: int) -> dict:
+
+    def _build_dict_tree(self, directory: Path, depth: int) -> dict[str, Any]:
+        """Build the nested dictionary representation of a directory tree."""
         if self.depth_level is not None and depth >= self.depth_level:
-             return {}
+            return {}
         entries = self._prepare_entries(directory)
         result = {}
         for entry in entries:
@@ -154,42 +193,59 @@ class FileTree:
             else:
                 result[name] = None
                 if self.file_size:
-                     result[name] = _format_size(self._get_size(entry))
+                    result[name] = _format_size(self._get_size(entry))
         return result
 
-    def getPath(self, pattern: str) -> List[pathlib.Path]:
+    def get_path(self, pattern: str) -> List[Path]:
+        """Return resolved paths matching the given pattern in the tree."""
         return self._find_paths(self.root_dir, pattern, 0)
 
-    def _find_paths(self, directory: pathlib.Path, pattern: str, depth: int) -> List[pathlib.Path]:
+    def _find_paths(
+        self, directory: Path, pattern: str, depth: int
+    ) -> List[Path]:
+        """Recursively search the tree for entries that match the pattern."""
         if self.depth_level is not None and depth >= self.depth_level:
-             return []
+            return []
         entries = self._prepare_entries(directory)
         found = []
         for entry in entries:
             rel_str = entry.relative_to(self.root_dir).as_posix()
-            if entry.name == pattern or fnmatch(rel_str, pattern) or entry.match(pattern):
-                 found.append(entry.resolve())
+            if (
+                entry.name == pattern
+                or fnmatch(rel_str, pattern)
+                or entry.match(pattern)
+            ):
+                found.append(entry.resolve())
             if entry.is_dir():
-                 found.extend(self._find_paths(entry, pattern, depth + 1))
+                found.extend(self._find_paths(entry, pattern, depth + 1))
         return found
 
-    def keys(self):
-        return self.getDictTree().keys()
+    def keys(self) -> KeysView[str]:
+        """Return the keys of the dictionary tree for dict() conversion."""
+        return self.get_dict_tree().keys()
 
-    def __getitem__(self, key):
-        return self.getDictTree()[key]
+    def __getitem__(self, key: str) -> Any:
+        """Return a key lookup from the dictionary tree representation."""
+        return self.get_dict_tree()[key]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
+        """Iterate over the tree output line by line."""
         return iter(self._tree)
 
     def __str__(self):
+        """Return the full tree as a newline-separated string."""
         return "\n".join(self._tree)
 
     def _build_tree(self) -> Deque[str]:
-        root_name = str(self.root_dir) if self.path_tree else (self.root_dir.name or str(self.root_dir))
-        root_display = f'{root_name}/'
+        """Build the internal deque of tree lines for the root directory."""
+        root_name = (
+            str(self.root_dir)
+            if self.path_tree
+            else (self.root_dir.name or str(self.root_dir))
+        )
+        root_display = f"{root_name}/"
         if self.dir_size:
-             root_display += f" ({_format_size(self._get_size(self.root_dir))})"
+            root_display += f" ({_format_size(self._get_size(self.root_dir))})"
 
         self._tree_deque.append(root_display)
 
@@ -198,15 +254,16 @@ class FileTree:
             if entries:
                 self._tree_deque.append(PIPE)
 
-        self._tree_body(self.root_dir, prefix='', depth=0)
+        self._tree_body(self.root_dir, prefix="", depth=0)
         return self._tree_deque
 
     def _tree_body(
         self,
-        directory: pathlib.Path,
+        directory: Path,
         prefix: str,
         depth: int,
     ) -> None:
+        """Recursively append formatted tree lines below a directory."""
         if self.depth_level is not None and depth >= self.depth_level:
             return
 
@@ -218,37 +275,45 @@ class FileTree:
 
         for index, entry in enumerate(entries):
             is_last = index == last_index
-            
+
             if self.text_only:
                 connector = " " * self.text_only_indent
                 full_prefix = prefix + connector
             else:
                 connector = ELBOW if is_last else TEE
-                full_prefix = f'{prefix}{connector} '
-            
+                full_prefix = f"{prefix}{connector} "
+
             entry_name = str(entry) if self.path_tree else entry.name
             display_name = f'{entry_name}{"/" if entry.is_dir() else ""}'
-            
-            if entry.is_dir() and self.dir_size:
-                 display_name += f" ({_format_size(self._get_size(entry))})"
-            elif entry.is_file() and self.file_size:
-                 display_name += f" ({_format_size(self._get_size(entry))})"
 
-            self._tree_deque.append(f'{full_prefix}{display_name}')
+            if entry.is_dir() and self.dir_size:
+                display_name += f" ({_format_size(self._get_size(entry))})"
+            elif entry.is_file() and self.file_size:
+                display_name += f" ({_format_size(self._get_size(entry))})"
+
+            self._tree_deque.append(f"{full_prefix}{display_name}")
 
             if entry.is_dir():
                 if self.text_only:
                     new_prefix = prefix + " " * self.text_only_indent
                 else:
-                    new_prefix = prefix + (SPACE_PREFIX if is_last else PIPE_PREFIX)
+                    new_prefix = (
+                        prefix
+                        + (SPACE_PREFIX if is_last else PIPE_PREFIX)
+                    )
                 self._tree_body(entry, new_prefix, depth + 1)
 
                 if not self.no_pipes and not self.text_only and not is_last:
                     self._tree_deque.append(prefix + PIPE)
 
-    def _prepare_entries(self, directory: pathlib.Path) -> List[pathlib.Path]:
+    def _prepare_entries(self, directory: Path) -> List[Path]:
+        """Prepare, sort, and filter directory entries before rendering."""
         try:
-            entries = sorted(directory.iterdir(), key=lambda e: e.name.lower(), reverse=self.reverse)
+            entries = sorted(
+                directory.iterdir(),
+                key=lambda e: e.name.lower(),
+                reverse=self.reverse,
+            )
         except PermissionError:
             return []
 
@@ -259,19 +324,20 @@ class FileTree:
         elif self.files_only:
             entries = [e for e in entries if e.is_file()]
 
-        if self.sort_size == 'big':
-             entries.sort(key=lambda e: self._get_size(e), reverse=True)
-        elif self.sort_size == 'small':
-             entries.sort(key=lambda e: self._get_size(e), reverse=False)
+        if self.sort_size == "big":
+            entries.sort(key=lambda e: self._get_size(e), reverse=True)
+        elif self.sort_size == "small":
+            entries.sort(key=lambda e: self._get_size(e), reverse=False)
         else:
-             if self.dirs_first:
-                 entries.sort(key=lambda e: e.is_file())
-             elif self.files_first:
-                 entries.sort(key=lambda e: e.is_dir())
+            if self.dirs_first:
+                entries.sort(key=lambda e: e.is_file())
+            elif self.files_first:
+                entries.sort(key=lambda e: e.is_dir())
 
         return entries
 
-    def _is_ignored(self, entry: pathlib.Path) -> bool:
+    def _is_ignored(self, entry: Path) -> bool:
+        """Return True when an entry is excluded by ignore or filter rules."""
         rel = entry.relative_to(self.root_dir)
         rel_str_root = rel.as_posix()
         is_dir = entry.is_dir()
@@ -279,7 +345,7 @@ class FileTree:
         def check_spec(spec, path_str):
             if spec.match_file(path_str):
                 return True
-            if is_dir and spec.match_file(path_str + '/'):
+            if is_dir and spec.match_file(path_str + "/"):
                 return True
             return False
 
@@ -291,7 +357,9 @@ class FileTree:
                 if not check_spec(self._filter_spec, rel_str_root):
                     return True
             else:
-                if not check_spec(self._filter_spec, rel_str_root) and not self._has_filtered_descendant(entry):
+                if not check_spec(
+                    self._filter_spec, rel_str_root
+                ) and not self._has_filtered_descendant(entry):
                     return True
 
         for gitignore_dir, spec in self._gitignore_list:
@@ -306,7 +374,8 @@ class FileTree:
 
         return False
 
-    def _has_filtered_descendant(self, directory: pathlib.Path) -> bool:
+    def _has_filtered_descendant(self, directory: Path) -> bool:
+        """Return True if the directory contains any matching entry."""
         if directory in self._filter_cache:
             return self._filter_cache[directory]
 
@@ -319,11 +388,16 @@ class FileTree:
 
                 entry_resolved = entry.resolve()
                 rel = entry_resolved.relative_to(self.root_dir).as_posix()
-                if self._filter_spec.match_file(rel) or (entry_resolved.is_dir() and self._filter_spec.match_file(rel + '/')):
+                if self._filter_spec.match_file(rel) or (
+                    entry_resolved.is_dir()
+                    and self._filter_spec.match_file(rel + "/")
+                ):
                     matched = True
                     break
 
-                if entry_resolved.is_dir() and self._has_filtered_descendant(entry_resolved):
+                if entry_resolved.is_dir() and self._has_filtered_descendant(
+                    entry_resolved
+                ):
                     matched = True
                     break
         except (PermissionError, FileNotFoundError, OSError):

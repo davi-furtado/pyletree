@@ -1,0 +1,28 @@
+site_name: Pyletree
+site_description: Generate directory tree diagrams from the command line and Python API.
+site_url: https://davi-furtado.github.io/pyletree
+repo_url: https://github.com/davi-furtado/pyletree
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - API: api.md
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - content.code.annotate
