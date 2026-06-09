@@ -31,8 +31,8 @@ def main() -> None:
             if args.big_first
             else ("small" if args.small_first else None)
         )
-        text_only = args.o is not None
-        text_only_indent = args.o if args.o is not None else 2
+        text_only = args.text_only is not None
+        text_only_indent = args.text_only if args.text_only is not None else 2
 
         git_mode = args.git
         use_gitignore = args.gitignore
@@ -63,7 +63,7 @@ def main() -> None:
             file_size=args.file_size,
             dir_size=args.dir_size,
             sort_size=sort_size,
-            filter_patterns=args.filter,
+            filter=args.filter,
             reverse=args.reverse,
         )
 

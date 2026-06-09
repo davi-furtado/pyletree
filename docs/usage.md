@@ -29,19 +29,19 @@
 
 - `-n`, `--no-pipes` Remove vertical pipes between branches
 - `-p`, `--path-tree` Generate a view focused exclusively on full paths
-- `-o [N]` Text-only mode: tree in plain text with `N` spaces indentation (default: 2)
+- `-t [N]`, `--text-only [N]` Text-only mode: tree in plain text with `N` spaces indentation (default: 2)
 
 ### Ignoring
 
-- `-g [DIR ...]`, `--git [DIR ...]` Ignore `.git` folder and respect `.gitignore` rules from specific directories or `.git` folders.
-- `-gi [DIR_OR_FILE ...]`, `--gitignore [DIR_OR_FILE ...]` Respect `.gitignore` rules from given paths or directories.
+- `-git [DIR ...]`, `--git [DIR ...]` Ignore `.git` folder and respect `.gitignore` rules from specific directories or `.git` folders.
+- `-g [DIR_OR_FILE ...]`, `--gitignore [DIR_OR_FILE ...]` Respect `.gitignore` rules from given paths or directories.
 - `-i PATTERN [PATTERN ...]`, `--ignore PATTERN [PATTERN ...]` Ignore files/directories matching gitignore-style patterns.
 - `-fi PATTERN [PATTERN ...]`, `--filter PATTERN [PATTERN ...]` Include only files or directories matching gitignore-style patterns.
 
 ### Depth and output
 
 - `-dl N`, `--depth-level N` Limit tree depth (must be >= 0)
-- `-dt [N]`, `--dict-tree [N]` Output the tree as a JSON dictionary. `N` defines indentation spaces (default: 2). Use `0` for compact output.
+- `-dt [N]`, `--dict-tree [N]` Output the tree as a JSON dictionary. `N` defines indentation spaces for CLI display only (default: 2). Use `0` for compact output.
 
 ## Examples
 
@@ -53,14 +53,15 @@ pyletree . -dl 2
 pyletree . -dt 4
 pyletree . -i node_modules dist .git
 pyletree . -fi *.py docs/
-pyletree . -gi
+pyletree . -g
+pyletree . -git
 pyletree . -n
+pyletree . -t 4
 pyletree . -fs
 pyletree . -ds
 pyletree . -b -fs
 pyletree . -s -fs
 pyletree . -r
 pyletree . -p
-pyletree . -o 4
 pyletree src/ -d -fs -dl 3 -i __pycache__
 ```

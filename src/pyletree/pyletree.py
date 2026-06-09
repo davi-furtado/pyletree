@@ -60,6 +60,7 @@ class FileTree:
         file_size: bool = False,
         dir_size: bool = False,
         sort_size: None | Literal["big", "small"] = None,
+        filter: Optional[List[str]] = None,
         filter_patterns: Optional[List[str]] = None,
         reverse: bool = False,
     ) -> None:
@@ -93,16 +94,16 @@ class FileTree:
         self._gitignore_list = []
         self._filter_cache = {}
 
+        self.filter = filter if filter is not None else filter_patterns
+
         # Initialize spec variables
         if ignore:
             self._ignore_spec = PathSpec.from_lines("gitwildmatch", ignore)
         else:
             self._ignore_spec = None
 
-        if filter_patterns:
-            self._filter_spec = PathSpec.from_lines(
-                "gitwildmatch", filter_patterns
-            )
+        if self.filter:
+            self._filter_spec = PathSpec.from_lines("gitwildmatch", self.filter)
         else:
             self._filter_spec = None
 
@@ -180,20 +181,28 @@ class FileTree:
         )
         return {root_name: self._build_dict_tree(self.root_dir, 0)}
 
-    def _build_dict_tree(self, directory: Path, depth: int) -> dict[str, Any]:
-        """Build the nested dictionary representation of a directory tree."""
+    def _build_dict_tree(self, directory: Path, depth: int) -> Any:
+        """Build the nested dictionary or list representation of a directory tree."""
         if self.depth_level is not None and depth >= self.depth_level:
-            return {}
+            return [] if not self.file_size else {}
         entries = self._prepare_entries(directory)
-        result = {}
+        if not self.file_size:
+            result: list[Any] = []
+            for entry in entries:
+                name = str(entry) if self.path_tree else entry.name
+                if entry.is_dir():
+                    result.append({name: self._build_dict_tree(entry, depth + 1)})
+                else:
+                    result.append(name)
+            return result
+
+        result: dict[str, Any] = {}
         for entry in entries:
             name = str(entry) if self.path_tree else entry.name
             if entry.is_dir():
                 result[name] = self._build_dict_tree(entry, depth + 1)
             else:
-                result[name] = None
-                if self.file_size:
-                    result[name] = _format_size(self._get_size(entry))
+                result[name] = _format_size(self._get_size(entry))
         return result
 
     def get_path(self, pattern: str) -> List[Path]:
@@ -229,8 +238,8 @@ class FileTree:
         return self.get_dict_tree()[key]
 
     def __iter__(self) -> Iterator[str]:
-        """Iterate over the tree output line by line."""
-        return iter(self._tree)
+        """Iterate over the tree as a mapping of the dict tree."""
+        return iter(self.get_dict_tree())
 
     def __str__(self):
         """Return the full tree as a newline-separated string."""

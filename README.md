@@ -3,7 +3,7 @@
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-2.5.0-orange">
+  <img src="https://img.shields.io/badge/version-2.6.0-orange">
   <img alt="Docs deploy" src="https://github.com/davi-furtado/pyletree/actions/workflows/docs-deploy.yml/badge.svg">
   <img alt="Documentation" src="https://img.shields.io/website?url=https://davi-furtado.github.io/pyletree">
 
@@ -112,12 +112,12 @@ pyletree -h
 
 - `-n`, `--no-pipes` Remove vertical pipes between branches
 - `-p`, `--path-tree` Generate a view focused exclusively on full paths
-- `-o [N]` Text-only mode: tree in plain text with `N` spaces indentation (default: 2). Cannot be used with `-n`
+- `-t [N]`, `--text-only [N]` Text-only mode: tree in plain text with `N` spaces indentation (default: 2). Cannot be used with `-n`
 
 ### Ignoring
 
-- `-g [DIR ...]`, `--git [DIR ...]` Ignore `.git` folder and respect rules from given `.git` directories or directories containing `.git` (defaults to current dir if omitted but flag is used)
-- `-gi [DIR_OR_FILE ...]`, `--gitignore [DIR_OR_FILE ...]` Respect `.gitignore` rules from given paths/dirs (defaults to current dir if omitted)
+- `-git [DIR ...]`, `--git [DIR ...]` Ignore `.git` folder and respect rules from given `.git` directories or directories containing `.git` (defaults to current dir if omitted but flag is used)
+- `-g [DIR_OR_FILE ...]`, `--gitignore [DIR_OR_FILE ...]` Respect `.gitignore` rules from given paths/dirs (defaults to current dir if omitted)
 - `-i PATTERN [PATTERN ...]`, `--ignore PATTERN [PATTERN ...]` Ignore files/directories matching gitignore-style patterns
 - `-fi PATTERN [PATTERN ...]`, `--filter PATTERN [PATTERN ...]` Include only files or directories matching gitignore-style patterns
 
@@ -127,7 +127,7 @@ pyletree -h
 
 ### Output Formats
 
-- `-dt [N]`, `--dict-tree [N]` Output the tree structure as a JSON dictionary. `N` defines indentation spaces (default: 2). Use `0` for compact output
+- `-dt [N]`, `--dict-tree [N]` Output the tree structure as a JSON dictionary. `N` defines indentation spaces for CLI display only (default: 2). Use `0` for compact output
 
 ## Examples
 
@@ -176,7 +176,7 @@ pyletree . -fi *.py docs/
 Use `.gitignore`:
 
 ```bash
-pyletree . -gi
+pyletree . -g
 ```
 
 No pipes mode:
@@ -224,13 +224,13 @@ pyletree . -p
 Text-only mode (4-space indent):
 
 ```bash
-pyletree . -o 4
+pyletree . -t 4
 ```
 
 Git mode (ignore `.git` and apply `.gitignore` rules):
 
 ```bash
-pyletree . -g
+pyletree . -git
 ```
 
 Combine options:
@@ -280,7 +280,7 @@ All parameters (except `root_dir`) are keyword-only:
 | `files_first`      | `bool`                        | `False` | List files before directories                                        |
 | `no_pipes`         | `bool`                        | `False` | Remove vertical pipes between branches                               |
 | `ignore`           | `list[str] \| None`           | `None`  | Gitignore-style patterns to ignore                                   |
-| `filter_patterns`  | `list[str] \| None`           | `None`  | Gitignore-style patterns to include only                             |
+| `filter`           | `list[str] \| None`           | `None`  | Gitignore-style patterns to include only                             |
 | `use_gitignore`    | `bool \| str \| Path \| list` | `False` | Respect `.gitignore` rules. `True` uses current dir, or pass path(s) |
 | `depth_level`      | `int \| None`                 | `None`  | Limit tree depth                                                     |
 | `path_tree`        | `bool`                        | `False` | Display full paths instead of names                                  |
@@ -304,12 +304,13 @@ output = tree.get_tree()
 
 #### `get_dict_tree() -> dict`
 
-Returns the tree as a nested dictionary. Files map to `None` (or their size string if `file_size=True`):
+Returns the tree as a nested dictionary-like structure.
+When `file_size=False` folder contents are represented as lists of names and nested dictionaries:
 
 ```python
 tree = FileTree('src/')
 data = tree.get_dict_tree()
-# {'src/': {'main.py': None, 'utils.py': None}}
+# {'src/': ['main.py', 'utils.py', {'subfolder': ['README.md']}]}
 
 # With file sizes
 tree = FileTree('src/', file_size=True)
@@ -484,6 +485,17 @@ project/ (5.6 KB)
 
 ## Release History
 
+### 2.6.0
+
+#### Enhancements
+
+- Added `--text-only` alias for the `-t` option.
+- Swapped CLI short aliases for git mode and gitignore mode:
+  - `-git` now maps to `--git`
+  - `-g` now maps to `--gitignore`
+- Added optional `N` indentation parameter to `-dt`/`--dict-tree` for CLI display (default 2, 0 for compact output).
+- Updated documentation and examples to reflect the new CLI aliases and `dict-tree` display behavior.
+
 ### 2.5.0
 
 #### Enhancements
@@ -545,7 +557,7 @@ project/ (5.6 KB)
 #### Visual & Metadata
 
 - `-p`/`--path-tree` | Path Tree: generates a view focused exclusively on the paths of files and directories.
-- `-o [N]` | Text-Only Mode: generates the tree in plain text (without special characters). Accepts an optional parameter `N` to define the indentation (default: 2 spaces). Can't be used with `-n`.
+- `-t [N]` | Text-Only Mode: generates the tree in plain text (without special characters). Accepts an optional parameter `N` to define the indentation (default: 2 spaces). Can't be used with `-n`.
 - `-fs`/`--file-size` | File Sizes: toggle visibility of individual file sizes.
 - `-ds`/`--dir-size` | Directory Sizes: display cumulative sizes for folders.
 - [`-b`/`--big-first` | `-s`/`--small-first`] | Smart Sorting: order tree entries by size (descending/ascending).

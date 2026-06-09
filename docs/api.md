@@ -23,7 +23,7 @@ for line in tree:
 - `files_first: bool = False` List files before directories
 - `no_pipes: bool = False` Remove vertical pipes between branches
 - `ignore: list[str] | None = None` Gitignore-style patterns to ignore
-- `filter_patterns: list[str] | None = None` Gitignore-style patterns to include only
+- `filter: list[str] | None = None` Gitignore-style patterns to include only
 - `use_gitignore: bool | str | Path | list[str | Path] = False` Respect `.gitignore` rules
 - `depth_level: int | None = None` Limit tree depth
 - `path_tree: bool = False` Display full paths instead of names

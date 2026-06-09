@@ -52,7 +52,8 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "-o",
+        "-t",
+        "--text-only",
         metavar="N",
         nargs="?",
         type=int,
@@ -138,7 +139,7 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "-gi",
+        "-g",
         "--gitignore",
         nargs="*",
         default=False,
@@ -150,7 +151,7 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "-g",
+        "-git",
         "--git",
         nargs="*",
         default=False,
@@ -179,13 +180,14 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
         const=2,
         help=(
             "output the tree structure as a native Python dictionary "
-            "(JSON format). N spaces indent (default 2)"
+            "(JSON format) with optional indentation for CLI display. "
+            "N spaces indent (default 2)"
         ),
     )
 
     args = parser.parse_args()
 
-    # Validate -g/--git option: must be directories only
+    # Validate -git/--git option: must be directories only
     if args.git is not False:
         if args.git:  # If specific paths provided
             for path_str in args.git:
@@ -205,7 +207,7 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
                         f"a .git directory: {path_str}"
                     )
 
-    # Validate -gi/--gitignore option: can be files or directories
+    # Validate -g/--gitignore option: can be files or directories
     if args.gitignore is not False:
         if args.gitignore:  # If specific paths provided
             for path_str in args.gitignore:
@@ -242,10 +244,10 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
     if args.depth_level is not None and args.depth_level < 0:
         parser.error("--depth-level must be >= 0")
 
-    if args.o is not None and args.no_pipes:
-        parser.error("-o (Text-Only Mode) cannot be used with -n/--no-pipes")
+    if args.text_only is not None and args.no_pipes:
+        parser.error("-t (Text-Only Mode) cannot be used with -n/--no-pipes")
 
-    if args.o is not None and args.o < 0:
-        parser.error("-o indent must be >= 0")
+    if args.text_only is not None and args.text_only < 0:
+        parser.error("-t indent must be >= 0")
 
     return args
