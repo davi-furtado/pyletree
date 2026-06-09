@@ -1,0 +1,2 @@
+[console_scripts]
+pyletree = pyletree.__main__:main
