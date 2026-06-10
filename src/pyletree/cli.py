@@ -132,10 +132,7 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
         metavar="PATTERN",
         nargs="*",
         default=None,
-        help=(
-            "include only files or directories matching "
-            "gitignore-style patterns"
-        ),
+        help=("include only files or directories matching " "gitignore-style patterns"),
     )
 
     parser.add_argument(
@@ -195,9 +192,7 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
                 if not path.exists():
                     parser.error(f"--git path does not exist: {path_str}")
                 if not path.is_dir():
-                    parser.error(
-                        f"--git option only accepts directories: {path_str}"
-                    )
+                    parser.error(f"--git option only accepts directories: {path_str}")
 
                 # Check if it's a .git directory or contains .git
                 git_dir = path if path.name == ".git" else path / ".git"
@@ -213,15 +208,12 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
             for path_str in args.gitignore:
                 path = pathlib.Path(path_str).resolve()
                 if not path.exists():
-                    parser.error(
-                        f"--gitignore path does not exist: {path_str}"
-                    )
+                    parser.error(f"--gitignore path does not exist: {path_str}")
 
                 # If it's a file, must be named .gitignore
                 if path.is_file() and path.name != ".gitignore":
                     parser.error(
-                            f"--gitignore file must be named "
-                            f".gitignore: {path_str}"
+                        f"--gitignore file must be named " f".gitignore: {path_str}"
                     )
 
                 # If it's a directory, must contain .gitignore
@@ -233,13 +225,8 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
                             f"file: {path_str}"
                         )
 
-    if (
-        (args.dir_only or args.files_only)
-        and (args.dirs_first or args.files_first)
-    ):
-        parser.error(
-            "ordering options cannot be used with --dir-only or --files-only"
-        )
+    if (args.dir_only or args.files_only) and (args.dirs_first or args.files_first):
+        parser.error("ordering options cannot be used with --dir-only or --files-only")
 
     if args.depth_level is not None and args.depth_level < 0:
         parser.error("--depth-level must be >= 0")

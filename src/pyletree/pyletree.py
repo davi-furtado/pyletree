@@ -209,9 +209,7 @@ class FileTree:
         """Return resolved paths matching the given pattern in the tree."""
         return self._find_paths(self.root_dir, pattern, 0)
 
-    def _find_paths(
-        self, directory: Path, pattern: str, depth: int
-    ) -> List[Path]:
+    def _find_paths(self, directory: Path, pattern: str, depth: int) -> List[Path]:
         """Recursively search the tree for entries that match the pattern."""
         if self.depth_level is not None and depth >= self.depth_level:
             return []
@@ -306,10 +304,7 @@ class FileTree:
                 if self.text_only:
                     new_prefix = prefix + " " * self.text_only_indent
                 else:
-                    new_prefix = (
-                        prefix
-                        + (SPACE_PREFIX if is_last else PIPE_PREFIX)
-                    )
+                    new_prefix = prefix + (SPACE_PREFIX if is_last else PIPE_PREFIX)
                 self._tree_body(entry, new_prefix, depth + 1)
 
                 if not self.no_pipes and not self.text_only and not is_last:
@@ -398,8 +393,7 @@ class FileTree:
                 entry_resolved = entry.resolve()
                 rel = entry_resolved.relative_to(self.root_dir).as_posix()
                 if self._filter_spec.match_file(rel) or (
-                    entry_resolved.is_dir()
-                    and self._filter_spec.match_file(rel + "/")
+                    entry_resolved.is_dir() and self._filter_spec.match_file(rel + "/")
                 ):
                     matched = True
                     break

@@ -26,11 +26,7 @@ def main() -> None:
         sys.exit(1)
 
     try:
-        sort_size = (
-            "big"
-            if args.big_first
-            else ("small" if args.small_first else None)
-        )
+        sort_size = "big" if args.big_first else ("small" if args.small_first else None)
         text_only = args.text_only is not None
         text_only_indent = args.text_only if args.text_only is not None else 2
 
