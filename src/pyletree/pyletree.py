@@ -15,6 +15,7 @@ ELBOW = "└──"
 TEE = "├──"
 PIPE_PREFIX = "│   "
 SPACE_PREFIX = "    "
+import locale
 
 
 def _format_size(size_val: int | float | str) -> str:
@@ -187,23 +188,23 @@ class FileTree:
             return [] if not self.file_size else {}
         entries = self._prepare_entries(directory)
         if not self.file_size:
-            result: list[Any] = []
+            result_list: list[Any] = []
             for entry in entries:
                 name = str(entry) if self.path_tree else entry.name
                 if entry.is_dir():
-                    result.append({name: self._build_dict_tree(entry, depth + 1)})
+                    result_list.append({name: self._build_dict_tree(entry, depth + 1)})
                 else:
-                    result.append(name)
-            return result
+                    result_list.append(name)
+            return result_list
 
-        result: dict[str, Any] = {}
+        result_dict: dict[str, Any] = {}
         for entry in entries:
             name = str(entry) if self.path_tree else entry.name
             if entry.is_dir():
-                result[name] = self._build_dict_tree(entry, depth + 1)
+                result_dict[name] = self._build_dict_tree(entry, depth + 1)
             else:
-                result[name] = _format_size(self._get_size(entry))
-        return result
+                result_dict[name] = _format_size(self._get_size(entry))
+        return result_dict
 
     def get_path(self, pattern: str) -> List[Path]:
         """Return resolved paths matching the given pattern in the tree."""
@@ -237,7 +238,9 @@ class FileTree:
 
     def __iter__(self) -> Iterator[str]:
         """Iterate over the tree as a mapping of the dict tree."""
-        return iter(self.get_dict_tree())
+        # Iterate over the generated tree lines so `for line in tree:`
+        # yields formatted tree lines for CLI printing.
+        return iter(self._tree)
 
     def __str__(self):
         """Return the full tree as a newline-separated string."""
@@ -408,3 +411,27 @@ class FileTree:
 
         self._filter_cache[directory] = matched
         return matched
+
+
+# Adjust drawing glyphs when the current stdout encoding cannot encode
+# the Unicode box-drawing characters (common on Windows cp1252 terminals).
+try:
+    _enc = sys.stdout.encoding or locale.getpreferredencoding(False) or "utf-8"
+except Exception:
+    _enc = "utf-8"
+
+
+def _encodes(s: str, enc: str) -> bool:
+    try:
+        s.encode(enc)
+        return True
+    except Exception:
+        return False
+
+
+if not _encodes(PIPE, _enc):
+    PIPE = "|"
+    ELBOW = "+--"
+    TEE = "|--"
+    PIPE_PREFIX = "|   "
+    SPACE_PREFIX = "    "

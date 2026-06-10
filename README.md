@@ -3,7 +3,7 @@
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-2.6.0-orange">
+  <img src="https://img.shields.io/badge/version-2.6.1-orange">
   <img alt="Docs deploy" src="https://github.com/davi-furtado/pyletree/actions/workflows/docs-deploy.yml/badge.svg">
   <img alt="Documentation" src="https://img.shields.io/website?url=https://davi-furtado.github.io/pyletree">
 
@@ -485,6 +485,10 @@ project/ (5.6 KB)
 
 ## Release History
 
+### 2.6.1
+
+Bug fixes & Improvements
+
 ### 2.6.0
 
 #### Enhancements
@@ -594,4 +598,3 @@ Leodanis Pozo Ramos
 ## License
 
 _Pyletree_ is distributed under the MIT license. See [LICENSE](LICENSE) for more information.
-
