@@ -1,6 +1,6 @@
-.github/workflows/__pycache__/
+**/__pycache__/
 build/
 dist/
 site/
-src/pyletree/__pycache__/
 src/pyletree.egg-info/
+.vscode/
