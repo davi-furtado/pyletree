@@ -2,6 +2,7 @@ site_name: Pyletree
 site_description: Generate directory tree diagrams from the command line and Python API.
 site_url: https://davi-furtado.github.io/pyletree
 repo_url: https://github.com/davi-furtado/pyletree
+edit_url: edit/main/docs/
 nav:
   - Home: index.md
   - Usage: usage.md
