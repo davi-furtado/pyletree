@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import lru_cache
 import sys
 from collections import deque
 from fnmatch import fnmatch
@@ -103,9 +104,7 @@ class FileTree:
         self.sort_size = sort_size
         self.reverse = reverse
 
-        self._size_cache: Dict[Path, int] = {}
         self._gitignore_list: List[Tuple[Path, PathSpec]] = []
-        self._filter_cache: Dict[Path, bool] = {}
         self._ignore_spec: Optional[PathSpec] = None
         self._filter_spec: Optional[PathSpec] = None
 
@@ -151,6 +150,7 @@ class FileTree:
                     file=sys.stderr,
                 )
 
+    @lru_cache(maxsize=None)
     def _get_size(self, path: Path) -> int:
         """Return the cached size for a path.
 
@@ -158,23 +158,18 @@ class FileTree:
         file size. Directories return the cumulative size of their contents,
         excluding symlinked children.
         """
-        if path in self._size_cache:
-            return self._size_cache[path]
         try:
             if path.is_file() or path.is_symlink():
-                size = path.stat().st_size
-            elif path.is_dir():
-                size = sum(
+                return path.stat().st_size
+            if path.is_dir():
+                return sum(
                     self._get_size(p)
                     for p in path.iterdir()
                     if p.exists() and not p.is_symlink()
                 )
-            else:
-                size = 0
         except (PermissionError, FileNotFoundError, OSError):
-            size = 0
-        self._size_cache[path] = size
-        return size
+            return 0
+        return 0
 
     @property
     def _tree(self) -> Deque[str]:
@@ -399,33 +394,26 @@ class FileTree:
 
         return False
 
+    @lru_cache(maxsize=None)
     def _has_filtered_descendant(self, directory: Path) -> bool:
         """Return True if the directory contains any matching entry."""
-        if directory in self._filter_cache:
-            return self._filter_cache[directory]
-
-        matched = False
         try:
             for entry in directory.iterdir():
                 if self._filter_spec is None:
-                    matched = True
-                    break
+                    return True
 
                 entry_resolved = entry.resolve()
                 rel = entry_resolved.relative_to(self.root_dir).as_posix()
                 if self._filter_spec.match_file(rel) or (
                     entry_resolved.is_dir() and self._filter_spec.match_file(rel + "/")
                 ):
-                    matched = True
-                    break
+                    return True
 
                 if entry_resolved.is_dir() and self._has_filtered_descendant(
                     entry_resolved
                 ):
-                    matched = True
-                    break
+                    return True
         except (PermissionError, FileNotFoundError, OSError):
-            matched = False
+            return False
 
-        self._filter_cache[directory] = matched
-        return matched
+        return False

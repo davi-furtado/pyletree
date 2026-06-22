@@ -3,7 +3,7 @@
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-2.6.2-orange">
+  <img src="https://img.shields.io/badge/version-2.6.3-orange">
   <img alt="Docs deploy" src="https://github.com/davi-furtado/pyletree/actions/workflows/docs-deploy.yml/badge.svg">
   <img alt="Documentation" src="https://img.shields.io/website?url=https://davi-furtado.github.io/pyletree">
 
@@ -484,6 +484,10 @@ project/ (5.6 KB)
 - Full Python API with `FileTree` class
 
 ## Release History
+
+### 2.6.3
+
+Changing manual cache to `lru_cache`
 
 ### 2.6.2
 
