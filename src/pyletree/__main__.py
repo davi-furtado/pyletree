@@ -1,8 +1,12 @@
 """Entry point for Pyletree CLI."""
 
-import json
-import pathlib
+from __future__ import annotations
+
+from json import dumps
+from pathlib import Path
 import sys
+import argparse
+from typing import List, Optional, Union
 
 from .cli import parse_cmd_line_arguments
 from .pyletree import FileTree
@@ -14,8 +18,8 @@ def main() -> None:
     Parses command-line arguments, configures FileTree, and prints the
     selected output format.
     """
-    args = parse_cmd_line_arguments()
-    root_dir = pathlib.Path(args.root_dir).resolve()
+    args: argparse.Namespace = parse_cmd_line_arguments()
+    root_dir: Path = Path(args.root_dir).resolve()
 
     if not root_dir.exists():
         print(f"Error: directory not found: {root_dir}", file=sys.stderr)
@@ -26,13 +30,15 @@ def main() -> None:
         sys.exit(1)
 
     try:
-        sort_size = "big" if args.big_first else ("small" if args.small_first else None)
-        text_only = args.text_only is not None
-        text_only_indent = args.text_only if args.text_only is not None else 2
+        sort_size: Optional[str] = (
+            "big" if args.big_first else ("small" if args.small_first else None)
+        )
+        text_only: bool = args.text_only is not None
+        text_only_indent: int = args.text_only if args.text_only is not None else 2
 
-        git_mode = args.git
-        use_gitignore = args.gitignore
-        ignore_patterns = args.ignore
+        git_mode: Union[bool, List[str]] = args.git
+        use_gitignore: Union[bool, List[str]] = args.gitignore
+        ignore_patterns: Optional[List[str]] = args.ignore
 
         if git_mode is not False:
             use_gitignore = git_mode if git_mode else ["."]
@@ -43,7 +49,7 @@ def main() -> None:
         elif use_gitignore is not False:
             use_gitignore = use_gitignore if use_gitignore else ["."]
 
-        tree = FileTree(
+        tree: FileTree = FileTree(
             root_dir=root_dir,
             dir_only=args.dir_only,
             files_only=args.files_only,
@@ -64,8 +70,8 @@ def main() -> None:
         )
 
         if args.dict_tree is not None:
-            indent = args.dict_tree if args.dict_tree > 0 else None
-            print(json.dumps(tree.get_dict_tree(), indent=indent))
+            indent: Optional[int] = args.dict_tree if args.dict_tree > 0 else None
+            print(dumps(tree.get_dict_tree(), indent=indent))
         else:
             for line in tree:
                 print(line)

@@ -6,7 +6,20 @@ import sys
 from collections import deque
 from fnmatch import fnmatch
 from pathlib import Path
-from typing import Any, Deque, Iterator, KeysView, List, Literal, Optional, Set
+from typing import (
+    Any,
+    Deque,
+    Dict,
+    Iterator,
+    KeysView,
+    List,
+    Literal,
+    Optional,
+    Sequence,
+    Set,
+    Tuple,
+    Union,
+)
 
 from pathspec import PathSpec
 
@@ -15,10 +28,9 @@ ELBOW = "└──"
 TEE = "├──"
 PIPE_PREFIX = "│   "
 SPACE_PREFIX = "    "
-import locale
 
 
-def _format_size(size_val: int | float | str) -> str:
+def _format_size(size_val: Union[int, float, str]) -> str:
     """Format a size value as a human-readable string.
 
     Accepts an integer, float, or already formatted string.
@@ -45,24 +57,24 @@ class FileTree:
 
     def __init__(
         self,
-        root_dir: Path | str = ".",
+        root_dir: Union[Path, str] = ".",
         *,
         dir_only: bool = False,
         files_only: bool = False,
         dirs_first: bool = False,
         files_first: bool = False,
         no_pipes: bool = False,
-        ignore: Optional[List[str]] = None,
-        use_gitignore: bool | str | Path | list[str | Path] = False,
+        ignore: Optional[Sequence[str]] = None,
+        use_gitignore: Union[bool, str, Path, Sequence[Union[str, Path]]] = False,
         depth_level: Optional[int] = None,
         path_tree: bool = False,
         text_only: bool = False,
         text_only_indent: int = 2,
         file_size: bool = False,
         dir_size: bool = False,
-        sort_size: None | Literal["big", "small"] = None,
-        filter: Optional[List[str]] = None,
-        filter_patterns: Optional[List[str]] = None,
+        sort_size: Optional[Literal["big", "small"]] = None,
+        filter: Optional[Sequence[str]] = None,
+        filter_patterns: Optional[Sequence[str]] = None,
         reverse: bool = False,
     ) -> None:
         """Initialize a FileTree with directory traversal options.
@@ -91,9 +103,11 @@ class FileTree:
         self.sort_size = sort_size
         self.reverse = reverse
 
-        self._size_cache = {}
-        self._gitignore_list = []
-        self._filter_cache = {}
+        self._size_cache: Dict[Path, int] = {}
+        self._gitignore_list: List[Tuple[Path, PathSpec]] = []
+        self._filter_cache: Dict[Path, bool] = {}
+        self._ignore_spec: Optional[PathSpec] = None
+        self._filter_spec: Optional[PathSpec] = None
 
         self.filter = filter if filter is not None else filter_patterns
 
@@ -173,7 +187,7 @@ class FileTree:
         """Return the generated tree as a single newline-separated string."""
         return str(self)
 
-    def get_dict_tree(self) -> dict[str, Any]:
+    def get_dict_tree(self) -> Dict[str, Any]:
         """Return the generated tree as a nested dictionary."""
         root_name = (
             str(self.root_dir)
@@ -182,13 +196,15 @@ class FileTree:
         )
         return {root_name: self._build_dict_tree(self.root_dir, 0)}
 
-    def _build_dict_tree(self, directory: Path, depth: int) -> Any:
+    def _build_dict_tree(
+        self, directory: Path, depth: int
+    ) -> Union[Dict[str, Any], List[Any]]:
         """Build the nested dictionary or list representation of a directory tree."""
         if self.depth_level is not None and depth >= self.depth_level:
             return [] if not self.file_size else {}
         entries = self._prepare_entries(directory)
         if not self.file_size:
-            result_list: list[Any] = []
+            result_list: List[Any] = []
             for entry in entries:
                 name = str(entry) if self.path_tree else entry.name
                 if entry.is_dir():
@@ -197,7 +213,7 @@ class FileTree:
                     result_list.append(name)
             return result_list
 
-        result_dict: dict[str, Any] = {}
+        result_dict: Dict[str, Any] = {}
         for entry in entries:
             name = str(entry) if self.path_tree else entry.name
             if entry.is_dir():
@@ -206,11 +222,11 @@ class FileTree:
                 result_dict[name] = _format_size(self._get_size(entry))
         return result_dict
 
-    def get_path(self, pattern: str) -> List[Path]:
+    def get_path(self, pattern: str) -> Sequence[Path]:
         """Return resolved paths matching the given pattern in the tree."""
         return self._find_paths(self.root_dir, pattern, 0)
 
-    def _find_paths(self, directory: Path, pattern: str, depth: int) -> List[Path]:
+    def _find_paths(self, directory: Path, pattern: str, depth: int) -> Sequence[Path]:
         """Recursively search the tree for entries that match the pattern."""
         if self.depth_level is not None and depth >= self.depth_level:
             return []
@@ -242,7 +258,7 @@ class FileTree:
         # yields formatted tree lines for CLI printing.
         return iter(self._tree)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return the full tree as a newline-separated string."""
         return "\n".join(self._tree)
 
@@ -313,7 +329,7 @@ class FileTree:
                 if not self.no_pipes and not self.text_only and not is_last:
                     self._tree_deque.append(prefix + PIPE)
 
-    def _prepare_entries(self, directory: Path) -> List[Path]:
+    def _prepare_entries(self, directory: Path) -> Sequence[Path]:
         """Prepare, sort, and filter directory entries before rendering."""
         try:
             entries = sorted(
@@ -349,7 +365,9 @@ class FileTree:
         rel_str_root = rel.as_posix()
         is_dir = entry.is_dir()
 
-        def check_spec(spec, path_str):
+        def check_spec(spec: Optional[PathSpec], path_str: str) -> bool:
+            if spec is None:
+                return False
             if spec.match_file(path_str):
                 return True
             if is_dir and spec.match_file(path_str + "/"):
@@ -411,27 +429,3 @@ class FileTree:
 
         self._filter_cache[directory] = matched
         return matched
-
-
-# Adjust drawing glyphs when the current stdout encoding cannot encode
-# the Unicode box-drawing characters (common on Windows cp1252 terminals).
-try:
-    _enc = sys.stdout.encoding or locale.getpreferredencoding(False) or "utf-8"
-except Exception:
-    _enc = "utf-8"
-
-
-def _encodes(s: str, enc: str) -> bool:
-    try:
-        s.encode(enc)
-        return True
-    except Exception:
-        return False
-
-
-if not _encodes(PIPE, _enc):
-    PIPE = "|"
-    ELBOW = "+--"
-    TEE = "|--"
-    PIPE_PREFIX = "|   "
-    SPACE_PREFIX = "    "
