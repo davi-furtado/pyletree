@@ -1,5 +1,5 @@
 <div align="center">
-  <h1 align="center">Pyletree</h1>
+  <h1>Pyletree</h1>
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
