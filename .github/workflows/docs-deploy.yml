@@ -29,8 +29,11 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v5
 
+      - name: Sync dependencies
+        run: uv sync --frozen --group docs
+
       - name: Build MkDocs site
-        run: uvx --with "mkdocs>=1.4,<2.0" --with "mkdocs-material<9.0.0" mkdocs build
+        run: uv run mkdocs build
 
       - name: Deploy documentation to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

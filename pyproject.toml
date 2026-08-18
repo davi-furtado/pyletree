@@ -28,8 +28,3 @@ docs = [
     "mkdocs-dracula-theme>=1.0.7",
     "mkdocstrings[python]>=0.26.1",
 ]
-
-[project.optional-dependencies]
-cli = [
-    "rich>=14.3.4",
-]
