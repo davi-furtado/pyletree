@@ -1,29 +1,35 @@
 [build-system]
-requires = ['setuptools>=61.0']
-build-backend = 'setuptools.build_meta'
+requires = ["uv_build>=0.11.29,<0.12.0"]
+build-backend = "uv_build"
 
 [project]
-name = 'pyletree'
-version = '2.6.3'
-description = 'Generate directory tree diagrams from the command line'
-readme = 'README.md'
-license = { file = 'LICENSE' }
+name = "pyletree"
+version = "2.6.4"
+description = "Generate directory tree diagrams from the command line"
+readme = "README.md"
+license = { file = "LICENSE" }
 authors = [
-    { name = 'Davi Reis Furtado' },
-    { name = 'Leodanis Pozo Ramos' }
+    { name = "Davi Reis Furtado" },
+    { name = "Leodanis Pozo Ramos" }
 ]
-requires-python = '>=3.8'
+requires-python = ">=3.8"
 dependencies = [
-    'pathspec',
+    "pathspec",
 ]
 [project.scripts]
-pyletree = 'pyletree.__main__:main'
+pyletree = "pyletree.__main__:main"
 
 [project.urls]
-Homepage = 'https://github.com/davi-furtado/pyletree'
+Homepage = "https://davi-furtado.github.io/pyletree"
+
+[dependency-groups]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-dracula-theme>=1.0.7",
+    "mkdocstrings[python]>=0.26.1",
+]
 
 [project.optional-dependencies]
-docs = [
-    'mkdocs>=1.4,<2.0',
-    'mkdocs-material<9.0.0',
+cli = [
+    "rich>=14.3.4",
 ]

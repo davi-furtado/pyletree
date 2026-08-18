@@ -1,6 +1,6 @@
-"""Top-level package for Pyletree."""
+"""Top-level package for PyleTree."""
 
-"""Top-level Pyletree package interface."""
+"""Top-level PyleTree package interface."""
 
 from importlib.metadata import version, PackageNotFoundError
 

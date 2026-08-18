@@ -1,4 +1,4 @@
-"""Entry point for Pyletree CLI."""
+"""Entry point for PyleTree CLI."""
 
 from __future__ import annotations
 

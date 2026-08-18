@@ -1,4 +1,4 @@
-"""This module provides Pyletree main module."""
+"""This module provides PyleTree main module."""
 
 from __future__ import annotations
 

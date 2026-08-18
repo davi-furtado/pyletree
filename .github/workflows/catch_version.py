@@ -3,20 +3,21 @@ Compare pyproject.toml version with the latest git tag.
 Useful for determining if a new release tag should be created.
 """
 
-import sys
 import os
-import tomllib
 import subprocess
+import sys
+import tomllib
+from typing import Literal, Optional
 
 
-def get_pyproject_version():
+def get_pyproject_version() -> str:
     """Get version from pyproject.toml."""
     with open("pyproject.toml", "rb") as f:
         data = tomllib.load(f)
     return data["project"]["version"]
 
 
-def get_latest_tag_version():
+def get_latest_tag_version() -> str | None:
     """Get version from the latest git tag."""
     try:
         result = (
@@ -32,7 +33,7 @@ def get_latest_tag_version():
         return None
 
 
-def set_output(name, value):
+def set_output(name: str, value: str) -> None:
     """Set GitHub Actions output using Environment Files (new method)."""
     github_output = os.getenv("GITHUB_OUTPUT")
     if github_output:
@@ -43,7 +44,7 @@ def set_output(name, value):
         print(f"::set-output name={name}::{value}")
 
 
-def main():
+def main() -> Literal[0] | Literal[1]:
     pyproject_version = get_pyproject_version()
     latest_tag_version = get_latest_tag_version()
 

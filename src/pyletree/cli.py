@@ -1,4 +1,4 @@
-"""This module provides the Pyletree CLI."""
+"""This module provides the PyleTree CLI."""
 
 import argparse
 import pathlib
@@ -11,7 +11,7 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="pyletree",
         description="Generate a directory tree",
-        epilog="Thanks for using Pyletree!",
+        epilog="Thanks for using PyleTree!",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
@@ -19,7 +19,7 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
         "-v",
         "--version",
         action="version",
-        version=f"Pyletree v{__version__}",
+        version=f"PyleTree v{__version__}",
     )
 
     parser.add_argument(

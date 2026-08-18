@@ -24,6 +24,9 @@ jobs:
         with:
           python-version: '3.13'
 
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Get versions
         id: version
         run: python3 .github/workflows/catch_version.py
@@ -62,16 +65,12 @@ jobs:
 
           git tag "v$VERSION"
           git push origin "v$VERSION"
-          
-          echo "created=true" >> $GITHUB_OUTPUT
 
-      - name: Install build tools
-        if: steps.create_tag.outputs.created == 'true'
-        run: pip install build
+          echo "created=true" >> $GITHUB_OUTPUT
 
       - name: Build package
         if: steps.create_tag.outputs.created == 'true'
-        run: python -m build
+        run: uv build
 
       - name: Publish to PyPI
         if: steps.create_tag.outputs.created == 'true'

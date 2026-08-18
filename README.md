@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Pyletree</h1>
+  <h1>PyleTree</h1>
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/github%20actions-%232671E5.svg?logo=githubactions&logoColor=white">
 </div>
 
-<p align="right"><i>Pyletree is a simple and fast CLI tool to generate directory tree diagrams.</i></p>
+<p align="right"><i>PyleTree is a simple and fast CLI tool to generate directory tree diagrams.</i></p>
 
 ## Table of Contents
 
@@ -241,7 +241,7 @@ pyletree src/ -d -fs -dl 3 -i __pycache__
 
 ## Python API
 
-You can also use Pyletree programmatically in your own Python code using the `FileTree` class. It returns an iterable that can also be printed directly.
+You can also use PyleTree programmatically in your own Python code using the `FileTree` class. It returns an iterable that can also be printed directly.
 
 ### Basic Usage
 
@@ -485,6 +485,11 @@ project/ (5.6 KB)
 
 ## Release History
 
+### 2.6.4
+
+- Docs website improved
+- Changed `Pyletree` to `PyleTree` on docstrings
+
 ### 2.6.3
 
 Changing manual cache to `lru_cache`
@@ -605,4 +610,4 @@ Leodanis Pozo Ramos
 
 ## License
 
-_Pyletree_ is distributed under the MIT license. See [LICENSE](LICENSE) for more information.
+_PyleTree_ is distributed under the MIT license. See [LICENSE](LICENSE) for more information.

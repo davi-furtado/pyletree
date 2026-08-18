@@ -1,11 +1,21 @@
-# Pyletree
+# PyleTree
 
-Pyletree is a simple CLI tool for generating directory tree diagrams.
+PyleTree is a simple CLI tool for generating directory tree diagrams.
 
 ## Install
 
+### From PyPI
+
 ```bash
 pip install pyletree
+```
+
+### Local
+
+```bash
+git clone https://github.com/davi-furtado/pyletree.git
+cd pyletree
+pip install -e .
 ```
 
 ## Quick start
