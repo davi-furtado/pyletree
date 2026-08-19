@@ -2,25 +2,25 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-        <title>Usage - PyleTree</title>
+        <title>PyleTree</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         
-        <link rel="canonical" href="https://davi-furtado.github.io/pyletree/usage/">
+        
         
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-            <link rel="stylesheet" href="../assets/css/darcula-highlight.min.css">
+            <link rel="stylesheet" href="./assets/css/darcula-highlight.min.css">
 
-        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../assets/css/dracula-ui.min.css">
-        <link rel="stylesheet" href="../assets/css/mkdocs.min.css">
-            <link href="../assets/_mkdocstrings.css" rel="stylesheet">
+        <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./assets/css/dracula-ui.min.css">
+        <link rel="stylesheet" href="./assets/css/mkdocs.min.css">
+            <link href="./assets/_mkdocstrings.css" rel="stylesheet">
 
         
-            <link  rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
+            <link  rel="icon" type="image/x-icon" href="./assets/img/favicon.ico">
         
             <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
                 <script>hljs.initHighlightingOnLoad();</script>
@@ -67,21 +67,21 @@
         <ul class="mb-5 drac-list drac-list-none">
             
             <li class="drac-box">
-                <a href=".."
+                <a href="./."
                     class="
                     drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
                     Home
                 </a>
             </li>
             <li class="drac-box">
-                <a href="./"
-                    class=" active 
+                <a href="./usage/"
+                    class="
                     drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
                     Usage
                 </a>
             </li>
             <li class="drac-box">
-                <a href="../api/"
+                <a href="./api/"
                     class="
                     drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
                     API
@@ -112,28 +112,12 @@
                     <!-- block preview -->
                     <li class="nav-item">
                             
-        <div class="container">
-            <div class="row row-preview">
-                <div class="col">
-                    <a href=".."
-                        class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover">
-                        <i class="fa fa-arrow-left"></i> Previous
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="../api/"
-                        class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover" style="padding-left: 3%;">
-                        Next <i class="fa fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
                     </li>
                     <!--  endblock -->
 
                     <!-- block search -->
                     <li class="nav-item"><div role="search" class="search-box">
-	<form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+	<form id="rtd-search-form" class="wy-form" action="./search.html" method="get">
 		<input type="text" name="q" class="drac-input drac-input-search drac-input-white drac-text-white drac-bg-black-secondary"
 		placeholder="Search docs" title="Type search term here" />
 	</form>
@@ -158,73 +142,25 @@
             <!-- endblock -->
 
             <!-- block content -->
-                <section class="p-md-5 section-content">
-    <article>
-        <p><h1 id="usage">Usage</h1>
-<h2 id="cli-options">CLI options</h2>
-<h3 id="general">General</h3>
-<ul>
-<li><code>-h</code>, <code>--help</code> Show help message</li>
-<li><code>-v</code>, <code>--version</code> Show version</li>
-</ul>
-<h3 id="modes">Modes</h3>
-<ul>
-<li><code>-do</code>, <code>--dir-only</code> Show directories only</li>
-<li><code>-fo</code>, <code>--files-only</code> Show files only</li>
-</ul>
-<h3 id="ordering">Ordering</h3>
-<ul>
-<li><code>-d</code>, <code>--dirs-first</code> List directories before files</li>
-<li><code>-f</code>, <code>--files-first</code> List files before directories</li>
-<li><code>-r</code>, <code>--reverse</code> Reverse alphabetical sort order</li>
-</ul>
-<h3 id="size">Size</h3>
-<ul>
-<li><code>-fs</code>, <code>--file-size</code> Display individual file sizes</li>
-<li><code>-ds</code>, <code>--dir-size</code> Display cumulative directory sizes</li>
-<li><code>-b</code>, <code>--big-first</code> Order entries by size (largest first)</li>
-<li><code>-s</code>, <code>--small-first</code> Order entries by size (smallest first)</li>
-</ul>
-<h3 id="display">Display</h3>
-<ul>
-<li><code>-n</code>, <code>--no-pipes</code> Remove vertical pipes between branches</li>
-<li><code>-p</code>, <code>--path-tree</code> Generate a view focused exclusively on full paths</li>
-<li><code>-t [N]</code>, <code>--text-only [N]</code> Text-only mode: tree in plain text with <code>N</code> spaces indentation (default: 2)</li>
-</ul>
-<h3 id="ignoring">Ignoring</h3>
-<ul>
-<li><code>-git [DIR ...]</code>, <code>--git [DIR ...]</code> Ignore <code>.git</code> folder and respect <code>.gitignore</code> rules from specific directories or <code>.git</code> folders.</li>
-<li><code>-g [DIR_OR_FILE ...]</code>, <code>--gitignore [DIR_OR_FILE ...]</code> Respect <code>.gitignore</code> rules from given paths or directories.</li>
-<li><code>-i PATTERN [PATTERN ...]</code>, <code>--ignore PATTERN [PATTERN ...]</code> Ignore files/directories matching gitignore-style patterns.</li>
-<li><code>-fi PATTERN [PATTERN ...]</code>, <code>--filter PATTERN [PATTERN ...]</code> Include only files or directories matching gitignore-style patterns.</li>
-</ul>
-<h3 id="depth-and-output">Depth and output</h3>
-<ul>
-<li><code>-dl N</code>, <code>--depth-level N</code> Limit tree depth (must be &gt;= 0)</li>
-<li><code>-dt [N]</code>, <code>--dict-tree [N]</code> Output the tree as a JSON dictionary. <code>N</code> defines indentation spaces for CLI display only (default: 2). Use <code>0</code> for compact output.</li>
-</ul>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-bash">pyletree .
-pyletree . -d
-pyletree . -fo
-pyletree . -dl 2
-pyletree . -dt 4
-pyletree . -i node_modules dist .git
-pyletree . -fi *.py docs/
-pyletree . -g
-pyletree . -git
-pyletree . -n
-pyletree . -t 4
-pyletree . -fs
-pyletree . -ds
-pyletree . -b -fs
-pyletree . -s -fs
-pyletree . -r
-pyletree . -p
-pyletree src/ -d -fs -dl 3 -i __pycache__
-</code></pre></p>
-    </article>
-</section>
+	<section class="p-md-5 content-search">
+		<article>
+			<p></p>
+			<h1 id="search">Search Results</h1>
+			<hr>
+
+			<form id="content_search" action="search.html">
+				<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+				<input name="q" id="mkdocs-search-query" type="text" class="drac-input drac-input-purple drac-text-white search_input search-query ui-autocomplete-input"
+					placeholder="Search the Docs" autocomplete="off" autofocus title="Type search term here">
+			</form>
+			
+			<div id="mkdocs-search-results" class="search-results" data-no-results-text="No results found">
+				Searching...
+			</div>
+
+		</article>
+	</section>
+
             <!-- endblock -->
 
             <!-- block footer -->
@@ -243,11 +179,11 @@ pyletree src/ -d -fs -dl 3 -i __pycache__
 
     </main>
 
-        <script>var base_url = '..';</script>
-        <script src="../assets/js/jquery-3.3.1.slim.min.js"></script>
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <script src="../assets/js/mkdocs.js"></script>
-			<script src="../search/main.js" defer></script>
+        <script>var base_url = '.';</script>
+        <script src="./assets/js/jquery-3.3.1.slim.min.js"></script>
+        <script src="./assets/js/bootstrap.bundle.min.js"></script>
+        <script src="./assets/js/mkdocs.js"></script>
+			<script src="./search/main.js" defer></script>
 
 </body>
 

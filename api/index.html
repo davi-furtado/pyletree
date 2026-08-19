@@ -1,470 +1,166 @@
-
 <!doctype html>
-<html lang="en" class="no-js">
-  <head>
-    
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      
-        <meta name="description" content="Generate directory tree diagrams from the command line and Python API.">
-      
-      
-      
+<html lang="en" data-bs-theme="dark">
+
+<head>
+        <title>API - PyleTree</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        
         <link rel="canonical" href="https://davi-furtado.github.io/pyletree/api/">
-      
-      <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-8.5.10">
-    
-    
-      
-        <title>API - Pyletree</title>
-      
-    
-    
-      <link rel="stylesheet" href="../assets/stylesheets/main.975780f9.min.css">
-      
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
-        
-      
-      
 
-    
-    
-    
-      
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
-      
-    
-    
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
-    
-      
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="../assets/css/darcula-highlight.min.css">
 
-    
-    
-    
-  </head>
-  
-  
-    
-    
-    
-    
-    
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="None" data-md-color-accent="None">
-  
-    
-    
-    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
-    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
-    <div data-md-component="skip">
-      
-        
-        <a href="#api" class="md-skip">
-          Skip to content
-        </a>
-      
-    </div>
-    <div data-md-component="announce">
-      
-    </div>
-    
-    
-      
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../assets/css/dracula-ui.min.css">
+        <link rel="stylesheet" href="../assets/css/mkdocs.min.css">
+            <link href="../assets/_mkdocstrings.css" rel="stylesheet">
 
-<header class="md-header" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Pyletree" class="md-header__button md-logo" aria-label="Pyletree" data-md-component="logo">
-      
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
-
-    </a>
-    <label class="md-header__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
-    </label>
-    <div class="md-header__title" data-md-component="header-title">
-      <div class="md-header__ellipsis">
-        <div class="md-header__topic">
-          <span class="md-ellipsis">
-            Pyletree
-          </span>
-        </div>
-        <div class="md-header__topic" data-md-component="header-topic">
-          <span class="md-ellipsis">
-            
-              API
-            
-          </span>
-        </div>
-      </div>
-    </div>
-    
-    
-    
-      <label class="md-header__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-      </label>
-      <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+            <link  rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+
+<body class="drac-bg-black-secondary drac-text-grey-ternary drac-text drac-scrollbar-purple">
+
+    <main class="d-flex">
+
+        <!-- block sidebar -->
+            <nav id="sidebar" class="sidebar drac-bg-black">
+    <div class="custom-menu">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+            <i class="fa fa-bars"></i>
+            <span class="sr-only">Menu</span>
         </button>
-      </nav>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list"></ol>
+    </div>
+
+    <div class="p-4">
+        
+
+        <div class="drac-text-center">
+            
+                <span class="drac-text drac-line-height drac-text-white">PyleTree</span>
+            
         </div>
-      </div>
+
+        <div class="drac-box flex-column">
+            <ul class="dot-ul">
+                <li><div class="dot-li drac-bg-cyan"></div></li>
+                <li><div class="dot-li drac-bg-green"></div></li>
+                <li><div class="dot-li drac-bg-orange"></div></li>
+                <li><div class="dot-li drac-bg-pink"></div></li>
+                <li><div class="dot-li drac-bg-purple"></div></li>
+                <li><div class="dot-li drac-bg-red"></div></li>
+                <li><div class="dot-li drac-bg-yellow"></div></li>
+            </ul>
+        </div>
+
+        <hr class="drac-divider" />
+
+        <!-- block menu -->
+        <ul class="mb-5 drac-list drac-list-none">
+            
+            <li class="drac-box">
+                <a href=".."
+                    class="
+                    drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+                    Home
+                </a>
+            </li>
+            <li class="drac-box">
+                <a href="../usage/"
+                    class="
+                    drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+                    Usage
+                </a>
+            </li>
+            <li class="drac-box">
+                <a href="./"
+                    class=" active 
+                    drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+                    API
+                </a>
+            </li>
+        </ul>
+        <!-- endblock -->
     </div>
-  </div>
+</nav>
+        <!-- endblock -->
+
+        <nav class="divider drac-bg-purple-cyan"></nav>
+
+        <div class="content">
+            <!-- block header -->
+                <header>
+    <nav class="navbar navbar-expand-xl drac-bg-purple">
+        <div class="container-fluid">
+            
+            <button class="navbar-toggler w-100 text-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsMenu"
+                aria-controls="navbarsMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse flex-column ml-auto" id="navbarsMenu">
+                <ul class="navbar-nav text-md-center">
+
+                    <!-- block preview -->
+                    <li class="nav-item">
+                            
+        <div class="container">
+            <div class="row row-preview">
+                <div class="col">
+                    <a href="../usage/"
+                        class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </div>
+                <div class="col">
+                    <a 
+                        class="btn-preview drac-btn drac-text-white--hover disabled" style="padding-left: 3%;">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+                    </li>
+                    <!--  endblock -->
+
+                    <!-- block search -->
+                    <li class="nav-item"><div role="search" class="search-box">
+	<form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+		<input type="text" name="q" class="drac-input drac-input-search drac-input-white drac-text-white drac-bg-black-secondary"
+		placeholder="Search docs" title="Type search term here" />
+	</form>
 </div>
-    
-    
-      <div class="md-header__source">
-        <a href="https://github.com/davi-furtado/pyletree" title="Go to repository" class="md-source" data-md-component="source">
-  <div class="md-source__icon md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
-  </div>
-  <div class="md-source__repository">
-    GitHub
-  </div>
-</a>
-      </div>
-    
-  </nav>
-  
+                    </li>
+                    <!--  endblock -->
+
+                    <!-- block source -->
+                    <li class="nav-item">
+                        
+                            
+                        
+                    </li>
+                    <!--  endblock -->
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
 </header>
-    
-    <div class="md-container" data-md-component="container">
-      
-      
-        
-          
-        
-      
-      <main class="md-main" data-md-component="main">
-        <div class="md-main__inner md-grid">
-          
-            
-              
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
+            <!-- endblock -->
 
-
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
-  <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Pyletree" class="md-nav__button md-logo" aria-label="Pyletree" data-md-component="logo">
-      
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
-
-    </a>
-    Pyletree
-  </label>
-  
-    <div class="md-nav__source">
-      <a href="https://github.com/davi-furtado/pyletree" title="Go to repository" class="md-source" data-md-component="source">
-  <div class="md-source__icon md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
-  </div>
-  <div class="md-source__repository">
-    GitHub
-  </div>
-</a>
-    </div>
-  
-  <ul class="md-nav__list" data-md-scrollfix>
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
-        Home
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../usage/" class="md-nav__link">
-        Usage
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          API
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        API
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    Example
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
-    Methods
-  </a>
-  
-    <nav class="md-nav" aria-label="Methods">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#get_tree-str" class="md-nav__link">
-    get_tree() -&gt; str
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get_dict_tree-dictstr-any" class="md-nav__link">
-    get_dict_tree() -&gt; dict[str, Any]
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get_pathpattern-str-listpath" class="md-nav__link">
-    get_path(pattern: str) -&gt; list[Path]
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dicttree" class="md-nav__link">
-    dict(tree)
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#iteration" class="md-nav__link">
-    Iteration
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#string-conversion" class="md-nav__link">
-    String conversion
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-    
-  </ul>
-</nav>
-                  </div>
-                </div>
-              </div>
-            
-            
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    Example
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
-    Methods
-  </a>
-  
-    <nav class="md-nav" aria-label="Methods">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#get_tree-str" class="md-nav__link">
-    get_tree() -&gt; str
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get_dict_tree-dictstr-any" class="md-nav__link">
-    get_dict_tree() -&gt; dict[str, Any]
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get_pathpattern-str-listpath" class="md-nav__link">
-    get_path(pattern: str) -&gt; list[Path]
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dicttree" class="md-nav__link">
-    dict(tree)
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#iteration" class="md-nav__link">
-    Iteration
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#string-conversion" class="md-nav__link">
-    String conversion
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
-          
-          
-            <div class="md-content" data-md-component="content">
-              <article class="md-content__inner md-typeset">
-                
-                  
-
-  <a href="https://github.com/davi-furtado/pyletree/edit/master/docs/api.md" title="Edit this page" class="md-content__button md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
-
-
-<h1 id="api">API</h1>
+            <!-- block content -->
+                <section class="p-md-5 section-content">
+    <article>
+        <p><h1 id="api">API</h1>
 <p>Use the <code>FileTree</code> class programmatically to generate directory trees from Python.</p>
 <h2 id="example">Example</h2>
 <pre><code class="language-python">from pyletree import FileTree
@@ -475,103 +171,762 @@ print(tree)
 for line in tree:
     print(line)
 </code></pre>
-<h2 id="parameters">Parameters</h2>
-<ul>
-<li><code>root_dir: str | Path = '.'</code> Root directory path</li>
-<li><code>dir_only: bool = False</code> Show directories only</li>
-<li><code>files_only: bool = False</code> Show files only</li>
-<li><code>dirs_first: bool = False</code> List directories before files</li>
-<li><code>files_first: bool = False</code> List files before directories</li>
-<li><code>no_pipes: bool = False</code> Remove vertical pipes between branches</li>
-<li><code>ignore: list[str] | None = None</code> Gitignore-style patterns to ignore</li>
-<li><code>filter: list[str] | None = None</code> Gitignore-style patterns to include only</li>
-<li><code>use_gitignore: bool | str | Path | list[str | Path] = False</code> Respect <code>.gitignore</code> rules</li>
-<li><code>depth_level: int | None = None</code> Limit tree depth</li>
-<li><code>path_tree: bool = False</code> Display full paths instead of names</li>
-<li><code>text_only: bool = False</code> Plain text mode</li>
-<li><code>text_only_indent: int = 2</code> Indentation spaces for text-only mode</li>
-<li><code>file_size: bool = False</code> Show individual file sizes</li>
-<li><code>dir_size: bool = False</code> Show cumulative sizes for directories</li>
-<li><code>sort_size: None | 'big' | 'small' = None</code> Sort by size</li>
-<li><code>reverse: bool = False</code> Reverse alphabetical sort order</li>
-</ul>
-<h2 id="methods">Methods</h2>
-<h3 id="get_tree-str"><code>get_tree() -&gt; str</code></h3>
-<p>Return the tree as a formatted string.</p>
-<h3 id="get_dict_tree-dictstr-any"><code>get_dict_tree() -&gt; dict[str, Any]</code></h3>
-<p>Return the tree as a nested dictionary.</p>
-<h3 id="get_pathpattern-str-listpath"><code>get_path(pattern: str) -&gt; list[Path]</code></h3>
-<p>Search for files or directories matching a pattern.</p>
-<h3 id="dicttree"><code>dict(tree)</code></h3>
-<p><code>FileTree</code> supports mapping conversion via <code>keys()</code> and <code>__getitem__()</code>.</p>
-<h3 id="iteration">Iteration</h3>
-<p>The class is iterable and yields one line of the tree at a time.</p>
-<h3 id="string-conversion">String conversion</h3>
-<p><code>str(tree)</code> returns the full tree.</p>
+<h2 id="filetree">FileTree</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="pyletree.FileTree"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>Generate a filesystem tree representation for a root directory.</p>
+<p>The tree supports filtering, ignoring patterns, sorting, and
+both textual and dictionary output.</p>
 
 
 
 
 
-                
-              </article>
-            </div>
-          
-          
-        </div>
-        
-      </main>
-      
-        <footer class="md-footer">
-  
-    
-    <nav class="md-footer__inner md-grid" aria-label="Footer" >
-      
-        
-        <a href="../usage/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Usage" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Usage
-            </div>
-          </div>
-        </a>
-      
-      
-    </nav>
-  
-  <div class="md-footer-meta md-typeset">
-    <div class="md-footer-meta__inner md-grid">
-      <div class="md-copyright">
-  
-  
-    Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
-    </a>
-  
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>src/pyletree/pyletree.py</code></summary>
+                <pre class="highlight"><code class="language-python">class FileTree:
+    """Generate a filesystem tree representation for a root directory.
+
+    The tree supports filtering, ignoring patterns, sorting, and
+    both textual and dictionary output.
+    """
+
+    def __init__(
+        self,
+        root_dir: Path | str = ".",
+        *,
+        dir_only: bool = False,
+        files_only: bool = False,
+        dirs_first: bool = False,
+        files_first: bool = False,
+        no_pipes: bool = False,
+        ignore: Sequence[str] | None = None,
+        use_gitignore: bool | str | Path | Sequence[str | Path] = False,
+        depth_level: int | None = None,
+        path_tree: bool = False,
+        backslashed_paths: bool = False,
+        text_only: bool = False,
+        text_only_indent: int = 2,
+        file_size: bool = False,
+        dir_size: bool = False,
+        sort_size: Literal["big", "small"] | None = None,
+        filter: Sequence[str] | None = None,
+        filter_patterns: Sequence[str] | None = None,
+        reverse: bool = False,
+    ) -&gt; None:
+        """Initialize a FileTree with directory traversal options.
+
+        Parameters are the same as the CLI options and control how the
+        directory tree is generated, filtered, sorted, and formatted.
+        """
+        if isinstance(root_dir, str):
+            root_dir = Path(root_dir)
+
+        self.root_dir = root_dir.resolve()
+        self.dir_only = dir_only
+        self.files_only = files_only
+        self.dirs_first = dirs_first
+        self.files_first = files_first
+        self.no_pipes = no_pipes
+        self.ignore: Set[str] = set(ignore or [])
+        self.depth_level = depth_level
+        self._tree_deque: Deque[str] = deque()
+
+        self.path_tree = path_tree
+        self.backslashed_paths = backslashed_paths
+        self.text_only = text_only
+        self.text_only_indent = text_only_indent
+        self.file_size = file_size
+        self.dir_size = dir_size
+        self.sort_size = sort_size
+        self.reverse = reverse
+
+        self._gitignore_list: List[Tuple[Path, PathSpec]] = []
+        self._ignore_spec: PathSpec | None = None
+        self._filter_spec: PathSpec | None = None
+
+        self.filter = filter if filter is not None else filter_patterns
+
+        # Initialize spec variables
+        if ignore:
+            self._ignore_spec = PathSpec.from_lines("gitwildmatch", ignore)
+        else:
+            self._ignore_spec = None
+
+        if self.filter:
+            self._filter_spec = PathSpec.from_lines("gitwildmatch", self.filter)
+        else:
+            self._filter_spec = None
+
+        if use_gitignore is not False:
+            try:
+                # Normalize to list
+                if use_gitignore is True:
+                    gis = [self.root_dir]
+                elif isinstance(use_gitignore, (str, Path)):
+                    gis = [use_gitignore]
+                else:
+                    gis = use_gitignore
+
+                for item in gis:
+                    item_path = Path(item).resolve()
+                    if item_path.is_file():
+                        gitignore_file = item_path
+                        gitignore_dir = item_path.parent
+                    else:
+                        gitignore_file = item_path / ".gitignore"
+                        gitignore_dir = item_path
+
+                    if gitignore_file.exists():
+                        patterns = gitignore_file.read_text().splitlines()
+                        spec = PathSpec.from_lines("gitwildmatch", patterns)
+                        self._gitignore_list.append((gitignore_dir, spec))
+            except Exception as e:
+                print(
+                    f"Warning: Error parsing gitignore rule: {e}",
+                    file=sys.stderr,
+                )
+
+    @lru_cache(maxsize=None)
+    def _get_size(self, path: Path) -&gt; int:
+        """Return the cached size for a path.
+
+        Compute directories recursively. Files and symlinks return their
+        file size. Directories return the cumulative size of their contents,
+        excluding symlinked children.
+        """
+        try:
+            if path.is_file() or path.is_symlink():
+                return path.stat().st_size
+            if path.is_dir():
+                return sum(
+                    self._get_size(p)
+                    for p in path.iterdir()
+                    if p.exists() and not p.is_symlink()
+                )
+        except (PermissionError, FileNotFoundError, OSError):
+            return 0
+        return 0
+
+    @property
+    def _tree(self) -&gt; Deque[str]:
+        """Return the cached list of tree lines, building it if needed."""
+        if not hasattr(self, "_cached_tree"):
+            self._cached_tree = self._build_tree()
+        return self._cached_tree
+
+    def get_tree(self) -&gt; str:
+        """Return the generated tree as a single newline-separated string."""
+        return str(self)
+
+    def get_dict_tree(self) -&gt; Dict[str, Any]:
+        """Return the generated tree as a nested dictionary."""
+        root_name = (
+            _format_path(self.root_dir, self.backslashed_paths)
+            if self.path_tree
+            else (self.root_dir.name or str(self.root_dir))
+        )
+        return {root_name: self._build_dict_tree(self.root_dir, 0)}
+
+    def _build_dict_tree(
+        self, directory: Path, depth: int
+    ) -&gt; Dict[str, Any] | List[Any]:
+        """Build the nested dictionary or list representation of a directory tree."""
+        if self.depth_level is not None and depth &gt;= self.depth_level:
+            return [] if not self.file_size else {}
+        entries = self._prepare_entries(directory)
+        if not self.file_size:
+            result_list: List[Any] = []
+            for entry in entries:
+                name = (
+                    _format_path(entry, self.backslashed_paths)
+                    if self.path_tree
+                    else entry.name
+                )
+                if entry.is_dir():
+                    result_list.append({name: self._build_dict_tree(entry, depth + 1)})
+                else:
+                    result_list.append(name)
+            return result_list
+
+        result_dict: Dict[str, Any] = {}
+        for entry in entries:
+            name = (
+                _format_path(entry, self.backslashed_paths)
+                if self.path_tree
+                else entry.name
+            )
+            if entry.is_dir():
+                result_dict[name] = self._build_dict_tree(entry, depth + 1)
+            else:
+                result_dict[name] = _format_size(self._get_size(entry))
+        return result_dict
+
+    def get_path(self, pattern: str) -&gt; Sequence[Path]:
+        """Return resolved paths matching the given pattern in the tree."""
+        return self._find_paths(self.root_dir, pattern, 0)
+
+    def _find_paths(self, directory: Path, pattern: str, depth: int) -&gt; Sequence[Path]:
+        """Recursively search the tree for entries that match the pattern."""
+        if self.depth_level is not None and depth &gt;= self.depth_level:
+            return []
+        entries = self._prepare_entries(directory)
+        found = []
+        for entry in entries:
+            rel_str = entry.relative_to(self.root_dir).as_posix()
+            if (
+                entry.name == pattern
+                or fnmatch(rel_str, pattern)
+                or entry.match(pattern)
+            ):
+                found.append(entry.resolve())
+            if entry.is_dir():
+                found.extend(self._find_paths(entry, pattern, depth + 1))
+        return found
+
+    def keys(self) -&gt; KeysView[str]:
+        """Return the keys of the dictionary tree for dict() conversion."""
+        return self.get_dict_tree().keys()
+
+    def __getitem__(self, key: str) -&gt; Any:
+        """Return a key lookup from the dictionary tree representation."""
+        return self.get_dict_tree()[key]
+
+    def __iter__(self) -&gt; Iterator[str]:
+        """Iterate over the tree as a mapping of the dict tree."""
+        # Iterate over the generated tree lines so `for line in tree:`
+        # yields formatted tree lines for CLI printing.
+        return iter(self._tree)
+
+    def __str__(self) -&gt; str:
+        """Return the full tree as a newline-separated string."""
+        return "\n".join(self._tree)
+
+    def _get_path_separator(self) -&gt; str:
+        """Return the separator used for displayed directory paths."""
+        return "\\" if self.backslashed_paths else "/"
+
+    def _build_tree(self) -&gt; Deque[str]:
+        """Build the internal deque of tree lines for the root directory."""
+        root_name = (
+            _format_path(self.root_dir, self.backslashed_paths)
+            if self.path_tree
+            else (self.root_dir.name or str(self.root_dir))
+        )
+        path_separator = self._get_path_separator()
+        root_display = f"{root_name}{path_separator}"
+        if self.dir_size:
+            root_display += f" ({_format_size(self._get_size(self.root_dir))})"
+
+        self._tree_deque.append(root_display)
+
+        if not self.no_pipes and not self.text_only:
+            entries = self._prepare_entries(self.root_dir)
+            if entries:
+                self._tree_deque.append(PIPE)
+
+        self._tree_body(self.root_dir, prefix="", depth=0)
+        return self._tree_deque
+
+    def _tree_body(
+        self,
+        directory: Path,
+        prefix: str,
+        depth: int,
+    ) -&gt; None:
+        """Recursively append formatted tree lines below a directory."""
+        if self.depth_level is not None and depth &gt;= self.depth_level:
+            return
+
+        entries = self._prepare_entries(directory)
+        if not entries:
+            return
+
+        last_index = len(entries) - 1
+
+        for index, entry in enumerate(entries):
+            is_last = index == last_index
+
+            if self.text_only:
+                connector = " " * self.text_only_indent
+                full_prefix = prefix + connector
+            else:
+                connector = ELBOW if is_last else TEE
+                full_prefix = f"{prefix}{connector} "
+
+            entry_name = (
+                _format_path(entry, self.backslashed_paths)
+                if self.path_tree
+                else entry.name
+            )
+            path_separator = self._get_path_separator()
+            display_name = (
+                f"{entry_name}{path_separator}" if entry.is_dir() else entry_name
+            )
+
+            if entry.is_dir() and self.dir_size:
+                display_name += f" ({_format_size(self._get_size(entry))})"
+            elif entry.is_file() and self.file_size:
+                display_name += f" ({_format_size(self._get_size(entry))})"
+
+            self._tree_deque.append(f"{full_prefix}{display_name}")
+
+            if entry.is_dir():
+                if self.text_only:
+                    new_prefix = prefix + " " * self.text_only_indent
+                else:
+                    new_prefix = prefix + (SPACE_PREFIX if is_last else PIPE_PREFIX)
+                self._tree_body(entry, new_prefix, depth + 1)
+
+                if not self.no_pipes and not self.text_only and not is_last:
+                    self._tree_deque.append(prefix + PIPE)
+
+    def _prepare_entries(self, directory: Path) -&gt; Sequence[Path]:
+        """Prepare, sort, and filter directory entries before rendering."""
+        try:
+            entries = sorted(
+                directory.iterdir(),
+                key=lambda e: e.name.lower(),
+                reverse=self.reverse,
+            )
+        except PermissionError:
+            return []
+
+        entries = [e for e in entries if not self._is_ignored(e)]
+
+        if self.dir_only:
+            entries = [e for e in entries if e.is_dir()]
+        elif self.files_only:
+            entries = [e for e in entries if e.is_file()]
+
+        if self.sort_size == "big":
+            entries.sort(key=lambda e: self._get_size(e), reverse=True)
+        elif self.sort_size == "small":
+            entries.sort(key=lambda e: self._get_size(e), reverse=False)
+        else:
+            if self.dirs_first:
+                entries.sort(key=lambda e: e.is_file())
+            elif self.files_first:
+                entries.sort(key=lambda e: e.is_dir())
+
+        return entries
+
+    def _is_ignored(self, entry: Path) -&gt; bool:
+        """Return True when an entry is excluded by ignore or filter rules."""
+        rel = entry.relative_to(self.root_dir)
+        rel_str_root = rel.as_posix()
+        is_dir = entry.is_dir()
+
+        def check_spec(spec: PathSpec | None, path_str: str) -&gt; bool:
+            if spec is None:
+                return False
+            if spec.match_file(path_str):
+                return True
+            if is_dir and spec.match_file(path_str + "/"):
+                return True
+            return False
+
+        if self._ignore_spec and check_spec(self._ignore_spec, rel_str_root):
+            return True
+
+        if self._filter_spec:
+            if entry.is_file():
+                if not check_spec(self._filter_spec, rel_str_root):
+                    return True
+            else:
+                if not check_spec(
+                    self._filter_spec, rel_str_root
+                ) and not self._has_filtered_descendant(entry):
+                    return True
+
+        for gitignore_dir, spec in self._gitignore_list:
+            try:
+                rel_git = entry.relative_to(gitignore_dir)
+                rel_git_str = rel_git.as_posix()
+
+                if check_spec(spec, rel_git_str):
+                    return True
+            except ValueError:
+                pass
+
+        return False
+
+    @lru_cache(maxsize=None)
+    def _has_filtered_descendant(self, directory: Path) -&gt; bool:
+        """Return True if the directory contains any matching entry."""
+        try:
+            for entry in directory.iterdir():
+                if self._filter_spec is None:
+                    return True
+
+                entry_resolved = entry.resolve()
+                rel = entry_resolved.relative_to(self.root_dir).as_posix()
+                if self._filter_spec.match_file(rel) or (
+                    entry_resolved.is_dir() and self._filter_spec.match_file(rel + "/")
+                ):
+                    return True
+
+                if entry_resolved.is_dir() and self._has_filtered_descendant(
+                    entry_resolved
+                ):
+                    return True
+        except (PermissionError, FileNotFoundError, OSError):
+            return False
+
+        return False</code></pre>
+              </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="pyletree.FileTree.__getitem__" class="doc doc-heading">
+            <code class="highlight language-python">__getitem__(key)</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a key lookup from the dictionary tree representation.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/pyletree/pyletree.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __getitem__(self, key: str) -&gt; Any:
+    """Return a key lookup from the dictionary tree representation."""
+    return self.get_dict_tree()[key]</code></pre>
+            </details>
+    </div>
+
 </div>
-      
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="pyletree.FileTree.__init__" class="doc doc-heading">
+            <code class="highlight language-python">__init__(root_dir='.', *, dir_only=False, files_only=False, dirs_first=False, files_first=False, no_pipes=False, ignore=None, use_gitignore=False, depth_level=None, path_tree=False, backslashed_paths=False, text_only=False, text_only_indent=2, file_size=False, dir_size=False, sort_size=None, filter=None, filter_patterns=None, reverse=False)</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize a FileTree with directory traversal options.</p>
+<p>Parameters are the same as the CLI options and control how the
+directory tree is generated, filtered, sorted, and formatted.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/pyletree/pyletree.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __init__(
+    self,
+    root_dir: Path | str = ".",
+    *,
+    dir_only: bool = False,
+    files_only: bool = False,
+    dirs_first: bool = False,
+    files_first: bool = False,
+    no_pipes: bool = False,
+    ignore: Sequence[str] | None = None,
+    use_gitignore: bool | str | Path | Sequence[str | Path] = False,
+    depth_level: int | None = None,
+    path_tree: bool = False,
+    backslashed_paths: bool = False,
+    text_only: bool = False,
+    text_only_indent: int = 2,
+    file_size: bool = False,
+    dir_size: bool = False,
+    sort_size: Literal["big", "small"] | None = None,
+    filter: Sequence[str] | None = None,
+    filter_patterns: Sequence[str] | None = None,
+    reverse: bool = False,
+) -&gt; None:
+    """Initialize a FileTree with directory traversal options.
+
+    Parameters are the same as the CLI options and control how the
+    directory tree is generated, filtered, sorted, and formatted.
+    """
+    if isinstance(root_dir, str):
+        root_dir = Path(root_dir)
+
+    self.root_dir = root_dir.resolve()
+    self.dir_only = dir_only
+    self.files_only = files_only
+    self.dirs_first = dirs_first
+    self.files_first = files_first
+    self.no_pipes = no_pipes
+    self.ignore: Set[str] = set(ignore or [])
+    self.depth_level = depth_level
+    self._tree_deque: Deque[str] = deque()
+
+    self.path_tree = path_tree
+    self.backslashed_paths = backslashed_paths
+    self.text_only = text_only
+    self.text_only_indent = text_only_indent
+    self.file_size = file_size
+    self.dir_size = dir_size
+    self.sort_size = sort_size
+    self.reverse = reverse
+
+    self._gitignore_list: List[Tuple[Path, PathSpec]] = []
+    self._ignore_spec: PathSpec | None = None
+    self._filter_spec: PathSpec | None = None
+
+    self.filter = filter if filter is not None else filter_patterns
+
+    # Initialize spec variables
+    if ignore:
+        self._ignore_spec = PathSpec.from_lines("gitwildmatch", ignore)
+    else:
+        self._ignore_spec = None
+
+    if self.filter:
+        self._filter_spec = PathSpec.from_lines("gitwildmatch", self.filter)
+    else:
+        self._filter_spec = None
+
+    if use_gitignore is not False:
+        try:
+            # Normalize to list
+            if use_gitignore is True:
+                gis = [self.root_dir]
+            elif isinstance(use_gitignore, (str, Path)):
+                gis = [use_gitignore]
+            else:
+                gis = use_gitignore
+
+            for item in gis:
+                item_path = Path(item).resolve()
+                if item_path.is_file():
+                    gitignore_file = item_path
+                    gitignore_dir = item_path.parent
+                else:
+                    gitignore_file = item_path / ".gitignore"
+                    gitignore_dir = item_path
+
+                if gitignore_file.exists():
+                    patterns = gitignore_file.read_text().splitlines()
+                    spec = PathSpec.from_lines("gitwildmatch", patterns)
+                    self._gitignore_list.append((gitignore_dir, spec))
+        except Exception as e:
+            print(
+                f"Warning: Error parsing gitignore rule: {e}",
+                file=sys.stderr,
+            )</code></pre>
+            </details>
     </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="pyletree.FileTree.__iter__" class="doc doc-heading">
+            <code class="highlight language-python">__iter__()</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Iterate over the tree as a mapping of the dict tree.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/pyletree/pyletree.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __iter__(self) -&gt; Iterator[str]:
+    """Iterate over the tree as a mapping of the dict tree."""
+    # Iterate over the generated tree lines so `for line in tree:`
+    # yields formatted tree lines for CLI printing.
+    return iter(self._tree)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="pyletree.FileTree.__str__" class="doc doc-heading">
+            <code class="highlight language-python">__str__()</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the full tree as a newline-separated string.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/pyletree/pyletree.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __str__(self) -&gt; str:
+    """Return the full tree as a newline-separated string."""
+    return "\n".join(self._tree)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="pyletree.FileTree.get_dict_tree" class="doc doc-heading">
+            <code class="highlight language-python">get_dict_tree()</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the generated tree as a nested dictionary.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/pyletree/pyletree.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_dict_tree(self) -&gt; Dict[str, Any]:
+    """Return the generated tree as a nested dictionary."""
+    root_name = (
+        _format_path(self.root_dir, self.backslashed_paths)
+        if self.path_tree
+        else (self.root_dir.name or str(self.root_dir))
+    )
+    return {root_name: self._build_dict_tree(self.root_dir, 0)}</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="pyletree.FileTree.get_path" class="doc doc-heading">
+            <code class="highlight language-python">get_path(pattern)</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return resolved paths matching the given pattern in the tree.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/pyletree/pyletree.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_path(self, pattern: str) -&gt; Sequence[Path]:
+    """Return resolved paths matching the given pattern in the tree."""
+    return self._find_paths(self.root_dir, pattern, 0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="pyletree.FileTree.get_tree" class="doc doc-heading">
+            <code class="highlight language-python">get_tree()</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the generated tree as a single newline-separated string.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/pyletree/pyletree.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_tree(self) -&gt; str:
+    """Return the generated tree as a single newline-separated string."""
+    return str(self)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="pyletree.FileTree.keys" class="doc doc-heading">
+            <code class="highlight language-python">keys()</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the keys of the dictionary tree for dict() conversion.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/pyletree/pyletree.py</code></summary>
+              <pre class="highlight"><code class="language-python">def keys(self) -&gt; KeysView[str]:
+    """Return the keys of the dictionary tree for dict() conversion."""
+    return self.get_dict_tree().keys()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
   </div>
+
+    </div>
+
+</div></p>
+    </article>
+</section>
+            <!-- endblock -->
+
+            <!-- block footer -->
+                
+                    <footer>
+    <div class="d-flex flex-sm-row justify-content-between py-2 border-top drac-text-black drac-bg-cyan-green">
+        <a href="https://github.com/dracula/mkdocs" target="_blank" style="padding-left: 1%;"
+            class="footer-text drac-anchor drac-text-black drac-text-purple--hover">
+            Made with Dracula Theme for MkDocs
+        </a>
+    </div>
 </footer>
-      
-    </div>
-    <div class="md-dialog" data-md-component="dialog">
-      <div class="md-dialog__inner md-typeset"></div>
-    </div>
-    
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
-    
-    
-      <script src="../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
-      
-    
-    
-  </body>
+                
+            <!-- endblock -->
+        </div>
+
+    </main>
+
+        <script>var base_url = '..';</script>
+        <script src="../assets/js/jquery-3.3.1.slim.min.js"></script>
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/js/mkdocs.js"></script>
+			<script src="../search/main.js" defer></script>
+
+</body>
+
 </html>
