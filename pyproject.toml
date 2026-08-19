@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "pyletree"
-version = "2.6.4"
+version = "2.7.0"
 description = "Generate directory tree diagrams from the command line"
 readme = "README.md"
 license = { file = "LICENSE" }

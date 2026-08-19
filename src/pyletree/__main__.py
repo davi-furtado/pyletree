@@ -1,12 +1,10 @@
 """Entry point for PyleTree CLI."""
 
-from __future__ import annotations
-
 from json import dumps
 from pathlib import Path
 import sys
 import argparse
-from typing import List, Optional, Union
+from typing import List
 
 from .cli import parse_cmd_line_arguments
 from .pyletree import FileTree
@@ -30,15 +28,15 @@ def main() -> None:
         sys.exit(1)
 
     try:
-        sort_size: Optional[str] = (
+        sort_size: str | None = (
             "big" if args.big_first else ("small" if args.small_first else None)
         )
         text_only: bool = args.text_only is not None
         text_only_indent: int = args.text_only if args.text_only is not None else 2
 
-        git_mode: Union[bool, List[str]] = args.git
-        use_gitignore: Union[bool, List[str]] = args.gitignore
-        ignore_patterns: Optional[List[str]] = args.ignore
+        git_mode: bool | List[str] = args.git
+        use_gitignore: bool | List[str] = args.gitignore
+        ignore_patterns: List[str] | None = args.ignore
 
         if git_mode is not False:
             use_gitignore = git_mode if git_mode else ["."]
@@ -60,6 +58,7 @@ def main() -> None:
             use_gitignore=use_gitignore,
             depth_level=args.depth_level,
             path_tree=args.path_tree,
+            backslashed_paths=args.backslash,
             text_only=text_only,
             text_only_indent=text_only_indent,
             file_size=args.file_size,
@@ -70,7 +69,7 @@ def main() -> None:
         )
 
         if args.dict_tree is not None:
-            indent: Optional[int] = args.dict_tree if args.dict_tree > 0 else None
+            indent: int | None = args.dict_tree if args.dict_tree > 0 else None
             print(dumps(tree.get_dict_tree(), indent=indent))
         else:
             for line in tree:
