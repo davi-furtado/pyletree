@@ -1,7 +1,5 @@
 """This module provides PyleTree main module."""
 
-from __future__ import annotations
-
 from functools import lru_cache
 import sys
 from collections import deque
@@ -19,7 +17,6 @@ from typing import (
     Sequence,
     Set,
     Tuple,
-    Union,
 )
 
 from pathspec import PathSpec
@@ -31,7 +28,13 @@ PIPE_PREFIX = "│   "
 SPACE_PREFIX = "    "
 
 
-def _format_size(size_val: Union[int, float, str]) -> str:
+def _format_path(path: Path, backslashed_paths: bool = False) -> str:
+    """Format a filesystem path with the requested separator style."""
+    formatted_path = path.as_posix()
+    return formatted_path.replace("/", "\\") if backslashed_paths else formatted_path
+
+
+def _format_size(size_val: int | float | str) -> str:
     """Format a size value as a human-readable string.
 
     Accepts an integer, float, or already formatted string.
@@ -58,24 +61,25 @@ class FileTree:
 
     def __init__(
         self,
-        root_dir: Union[Path, str] = ".",
+        root_dir: Path | str = ".",
         *,
         dir_only: bool = False,
         files_only: bool = False,
         dirs_first: bool = False,
         files_first: bool = False,
         no_pipes: bool = False,
-        ignore: Optional[Sequence[str]] = None,
-        use_gitignore: Union[bool, str, Path, Sequence[Union[str, Path]]] = False,
-        depth_level: Optional[int] = None,
+        ignore: Sequence[str] | None = None,
+        use_gitignore: bool | str | Path | Sequence[str | Path] = False,
+        depth_level: int | None = None,
         path_tree: bool = False,
+        backslashed_paths: bool = False,
         text_only: bool = False,
         text_only_indent: int = 2,
         file_size: bool = False,
         dir_size: bool = False,
-        sort_size: Optional[Literal["big", "small"]] = None,
-        filter: Optional[Sequence[str]] = None,
-        filter_patterns: Optional[Sequence[str]] = None,
+        sort_size: Literal["big", "small"] | None = None,
+        filter: Sequence[str] | None = None,
+        filter_patterns: Sequence[str] | None = None,
         reverse: bool = False,
     ) -> None:
         """Initialize a FileTree with directory traversal options.
@@ -97,6 +101,7 @@ class FileTree:
         self._tree_deque: Deque[str] = deque()
 
         self.path_tree = path_tree
+        self.backslashed_paths = backslashed_paths
         self.text_only = text_only
         self.text_only_indent = text_only_indent
         self.file_size = file_size
@@ -105,8 +110,8 @@ class FileTree:
         self.reverse = reverse
 
         self._gitignore_list: List[Tuple[Path, PathSpec]] = []
-        self._ignore_spec: Optional[PathSpec] = None
-        self._filter_spec: Optional[PathSpec] = None
+        self._ignore_spec: PathSpec | None = None
+        self._filter_spec: PathSpec | None = None
 
         self.filter = filter if filter is not None else filter_patterns
 
@@ -185,7 +190,7 @@ class FileTree:
     def get_dict_tree(self) -> Dict[str, Any]:
         """Return the generated tree as a nested dictionary."""
         root_name = (
-            str(self.root_dir)
+            _format_path(self.root_dir, self.backslashed_paths)
             if self.path_tree
             else (self.root_dir.name or str(self.root_dir))
         )
@@ -193,7 +198,7 @@ class FileTree:
 
     def _build_dict_tree(
         self, directory: Path, depth: int
-    ) -> Union[Dict[str, Any], List[Any]]:
+    ) -> Dict[str, Any] | List[Any]:
         """Build the nested dictionary or list representation of a directory tree."""
         if self.depth_level is not None and depth >= self.depth_level:
             return [] if not self.file_size else {}
@@ -201,7 +206,11 @@ class FileTree:
         if not self.file_size:
             result_list: List[Any] = []
             for entry in entries:
-                name = str(entry) if self.path_tree else entry.name
+                name = (
+                    _format_path(entry, self.backslashed_paths)
+                    if self.path_tree
+                    else entry.name
+                )
                 if entry.is_dir():
                     result_list.append({name: self._build_dict_tree(entry, depth + 1)})
                 else:
@@ -210,7 +219,11 @@ class FileTree:
 
         result_dict: Dict[str, Any] = {}
         for entry in entries:
-            name = str(entry) if self.path_tree else entry.name
+            name = (
+                _format_path(entry, self.backslashed_paths)
+                if self.path_tree
+                else entry.name
+            )
             if entry.is_dir():
                 result_dict[name] = self._build_dict_tree(entry, depth + 1)
             else:
@@ -257,14 +270,19 @@ class FileTree:
         """Return the full tree as a newline-separated string."""
         return "\n".join(self._tree)
 
+    def _get_path_separator(self) -> str:
+        """Return the separator used for displayed directory paths."""
+        return "\\" if self.backslashed_paths else "/"
+
     def _build_tree(self) -> Deque[str]:
         """Build the internal deque of tree lines for the root directory."""
         root_name = (
-            str(self.root_dir)
+            _format_path(self.root_dir, self.backslashed_paths)
             if self.path_tree
             else (self.root_dir.name or str(self.root_dir))
         )
-        root_display = f"{root_name}/"
+        path_separator = self._get_path_separator()
+        root_display = f"{root_name}{path_separator}"
         if self.dir_size:
             root_display += f" ({_format_size(self._get_size(self.root_dir))})"
 
@@ -304,8 +322,15 @@ class FileTree:
                 connector = ELBOW if is_last else TEE
                 full_prefix = f"{prefix}{connector} "
 
-            entry_name = str(entry) if self.path_tree else entry.name
-            display_name = f'{entry_name}{"/" if entry.is_dir() else ""}'
+            entry_name = (
+                _format_path(entry, self.backslashed_paths)
+                if self.path_tree
+                else entry.name
+            )
+            path_separator = self._get_path_separator()
+            display_name = (
+                f"{entry_name}{path_separator}" if entry.is_dir() else entry_name
+            )
 
             if entry.is_dir() and self.dir_size:
                 display_name += f" ({_format_size(self._get_size(entry))})"
@@ -360,7 +385,7 @@ class FileTree:
         rel_str_root = rel.as_posix()
         is_dir = entry.is_dir()
 
-        def check_spec(spec: Optional[PathSpec], path_str: str) -> bool:
+        def check_spec(spec: PathSpec | None, path_str: str) -> bool:
             if spec is None:
                 return False
             if spec.match_file(path_str):

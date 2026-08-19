@@ -7,7 +7,7 @@ import os
 import subprocess
 import sys
 import tomllib
-from typing import Literal, Optional
+from typing import Literal
 
 
 def get_pyproject_version() -> str:

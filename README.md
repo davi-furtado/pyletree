@@ -3,7 +3,7 @@
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
   <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/version-2.6.3-orange">
+  <img src="https://img.shields.io/badge/version-2.7.0-orange">
   <img alt="Docs deploy" src="https://github.com/davi-furtado/pyletree/actions/workflows/docs-deploy.yml/badge.svg">
   <img alt="Documentation" src="https://img.shields.io/website?url=https://davi-furtado.github.io/pyletree">
 
@@ -112,6 +112,7 @@ pyletree -h
 
 - `-n`, `--no-pipes` Remove vertical pipes between branches
 - `-p`, `--path-tree` Generate a view focused exclusively on full paths
+- `-bs`, `--backslash` Display paths with Windows-style backslashes
 - `-t [N]`, `--text-only [N]` Text-only mode: tree in plain text with `N` spaces indentation (default: 2). Cannot be used with `-n`
 
 ### Ignoring
@@ -221,6 +222,12 @@ Path tree mode:
 pyletree . -p
 ```
 
+Windows-style paths:
+
+```bash
+pyletree . -p -bs
+```
+
 Text-only mode (4-space indent):
 
 ```bash
@@ -271,25 +278,26 @@ print(custom_tree)
 
 All parameters (except `root_dir`) are keyword-only:
 
-| Parameter          | Type                          | Default | Description                                                          |
-| ------------------ | ----------------------------- | ------- | -------------------------------------------------------------------- |
-| `root_dir`         | `str \| Path`                 | `'.'`   | Root directory path                                                  |
-| `dir_only`         | `bool`                        | `False` | Show directories only                                                |
-| `files_only`       | `bool`                        | `False` | Show files only                                                      |
-| `dirs_first`       | `bool`                        | `False` | List directories before files                                        |
-| `files_first`      | `bool`                        | `False` | List files before directories                                        |
-| `no_pipes`         | `bool`                        | `False` | Remove vertical pipes between branches                               |
-| `ignore`           | `list[str] \| None`           | `None`  | Gitignore-style patterns to ignore                                   |
-| `filter`           | `list[str] \| None`           | `None`  | Gitignore-style patterns to include only                             |
-| `use_gitignore`    | `bool \| str \| Path \| list` | `False` | Respect `.gitignore` rules. `True` uses current dir, or pass path(s) |
-| `depth_level`      | `int \| None`                 | `None`  | Limit tree depth                                                     |
-| `path_tree`        | `bool`                        | `False` | Display full paths instead of names                                  |
-| `text_only`        | `bool`                        | `False` | Plain text mode (no special characters)                              |
-| `text_only_indent` | `int`                         | `2`     | Indentation spaces for text-only mode                                |
-| `file_size`        | `bool`                        | `False` | Show individual file sizes                                           |
-| `dir_size`         | `bool`                        | `False` | Show cumulative directory sizes                                      |
-| `sort_size`        | `str \| None`                 | `None`  | Sort by size: `'big'` or `'small'`                                   |
-| `reverse`          | `bool`                        | `False` | Reverse alphabetical sort order                                      |
+| Parameter           | Type                          | Default | Description                                                          |
+| ------------------- | ----------------------------- | ------- | -------------------------------------------------------------------- |
+| `root_dir`          | `str \| Path`                 | `'.'`   | Root directory path                                                  |
+| `dir_only`          | `bool`                        | `False` | Show directories only                                                |
+| `files_only`        | `bool`                        | `False` | Show files only                                                      |
+| `dirs_first`        | `bool`                        | `False` | List directories before files                                        |
+| `files_first`       | `bool`                        | `False` | List files before directories                                        |
+| `no_pipes`          | `bool`                        | `False` | Remove vertical pipes between branches                               |
+| `ignore`            | `list[str] \| None`           | `None`  | Gitignore-style patterns to ignore                                   |
+| `filter`            | `list[str] \| None`           | `None`  | Gitignore-style patterns to include only                             |
+| `use_gitignore`     | `bool \| str \| Path \| list` | `False` | Respect `.gitignore` rules. `True` uses current dir, or pass path(s) |
+| `depth_level`       | `int \| None`                 | `None`  | Limit tree depth                                                     |
+| `path_tree`         | `bool`                        | `False` | Display full paths instead of names                                  |
+| `backslashed_paths` | `bool`                        | `False` | Display paths with Windows-style backslashes                         |
+| `text_only`         | `bool`                        | `False` | Plain text mode (no special characters)                              |
+| `text_only_indent`  | `int`                         | `2`     | Indentation spaces for text-only mode                                |
+| `file_size`         | `bool`                        | `False` | Show individual file sizes                                           |
+| `dir_size`          | `bool`                        | `False` | Show cumulative directory sizes                                      |
+| `sort_size`         | `str \| None`                 | `None`  | Sort by size: `'big'` or `'small'`                                   |
+| `reverse`           | `bool`                        | `False` | Reverse alphabetical sort order                                      |
 
 ### Methods
 
@@ -484,6 +492,11 @@ project/ (5.6 KB)
 - Full Python API with `FileTree` class
 
 ## Release History
+
+### 2.7.0
+
+- Added `backslashed_paths` to the Python API.
+- Added `-bs`/`--backslash` to display paths with Windows-style backslashes.
 
 ### 2.6.4
 

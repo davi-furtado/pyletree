@@ -52,6 +52,13 @@ def parse_cmd_line_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "-bs",
+        "--backslash",
+        action="store_true",
+        help="use Windows-style backslashes when displaying paths",
+    )
+
+    parser.add_argument(
         "-t",
         "--text-only",
         metavar="N",
