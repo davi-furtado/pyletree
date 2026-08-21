@@ -2,16 +2,12 @@
   <h1>PyleTree</h1>
 
   <img src="https://img.shields.io/badge/python-3.8%2B-blue">
-  <img src="https://img.shields.io/badge/license-MIT-green">
   <img src="https://img.shields.io/badge/version-2.7.0-orange">
-  <img alt="Docs deploy" src="https://github.com/davi-furtado/pyletree/actions/workflows/docs-deploy.yml/badge.svg">
-  <img alt="Documentation" src="https://img.shields.io/website?url=https://davi-furtado.github.io/pyletree">
 
   <br>
 
-  <img src="https://img.shields.io/badge/python-3670A0?logo=python&logoColor=ffdd54">
-  <img src="https://img.shields.io/badge/pypi-%23ececec.svg?logo=pypi&logoColor=1f73b7">
-  <img src="https://img.shields.io/badge/github%20actions-%232671E5.svg?logo=githubactions&logoColor=white">
+  <img src="https://img.shields.io/badge/license-MIT-green">
+  <img alt="Documentation" src="https://img.shields.io/website?url=https://davi-furtado.github.io/pyletree">
 </div>
 
 <p align="right"><i>PyleTree is a simple and fast CLI tool to generate directory tree diagrams.</i></p>
