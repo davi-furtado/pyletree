@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/agents/**'
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/agents/**'
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up UV
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build package
+        run: uv build
+
+      - name: Install built package
+        run: |
+          WHEEL=$(find dist -name "*.whl" | head -1)
+          uv pip install "$WHEEL"
+
+      - name: Test CLI basic functionality
+        run: |
+          python -m pyletree --help
+          python -m pyletree --version
+          python -m pyletree . -dl 1 | head -20
+
+      - name: Test Python API
+        run: |
+          python -c "from pyletree import FileTree; tree = FileTree('.', depth_level=1); print(tree)"

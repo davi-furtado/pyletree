@@ -610,6 +610,44 @@ Bug fixes & Improvements
 
 - Initial release
 
+## Contributing
+
+Contributions are welcome! Whether you're reporting bugs, requesting features, or submitting code, please follow these guidelines:
+
+### Getting Started
+
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/pyletree.git`
+3. Create a feature branch: `git checkout -b feat/your-feature`
+4. Install development dependencies: `uv sync --all-groups`
+
+### Before Submitting a PR
+
+- Run the CLI locally to test your changes: `python -m pyletree . -dl 1`
+- Test the Python API: `python -c "from pyletree import FileTree; print(FileTree('.')"`
+- Update README, docs, and docstrings if your changes affect the user-facing API
+- Update CHANGELOG.md with your changes
+
+### Code Standards
+
+See [`.github/copilot-instructions.md`](.github/copilot-instructions.md) for detailed conventions:
+- Python style, docstring format, type hints
+- CLI argument naming and grouping
+- Testing practices (when implemented)
+
+### Reporting Issues
+
+Use the [Bug Report](https://github.com/davi-furtado/pyletree/issues/new?template=bug_report.yml) or [Feature Request](https://github.com/davi-furtado/pyletree/issues/new?template=feature_request.yml) templates on GitHub.
+
+### Release Process
+
+Version bumps in `pyproject.toml` trigger automatic:
+1. Git tag creation (e.g., `v2.7.0`)
+2. Package build (wheel + source dist)
+3. PyPI publication
+
+For repository maintainers: See [AGENTS.md](AGENTS.md) for full architecture and contribution workflow.
+
 ## Authors
 
 Davi Reis Furtado
