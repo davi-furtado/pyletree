@@ -40,17 +40,12 @@ jobs:
       - name: Build package
         run: uv build
 
-      - name: Install built package
-        run: |
-          WHEEL=$(find dist -name "*.whl" | head -1)
-          uv pip install "$WHEEL"
-
       - name: Test CLI basic functionality
         run: |
-          python -m pyletree --help
-          python -m pyletree --version
-          python -m pyletree . -dl 1 | head -20
+          uv run pyletree --help
+          uv run pyletree --version
+          uv run pyletree . -dl 1 | head -20
 
       - name: Test Python API
         run: |
-          python -c "from pyletree import FileTree; tree = FileTree('.', depth_level=1); print(tree)"
+          uv run python -c "from pyletree import FileTree; tree = FileTree('.', depth_level=1); print(tree)"
