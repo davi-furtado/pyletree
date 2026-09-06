@@ -15,7 +15,7 @@
 - Methods should be snake_case and align with common patterns: `get_*()`, `is_*()`, `__str__()`, iteration protocol
 
 ### Docstrings
-- **Format**: Google style (enforced by `mkdocstrings[python]`)
+- **Format**: Google style
 - **All public methods**: Must have docstrings
 - **Public classes**: Must document purpose, parameters, and usage example
 - **Private internals**: Brief docstrings sufficient; style consistency preferred
@@ -215,7 +215,7 @@ This matrix documents which files must be updated when specific components chang
 | `docs/usage.md` | CLI behavior | Option added, example no longer works |
 | `docs/api.md` | `FileTree` class | Parameter added, method added/removed, return type changes |
 | `docs/index.md` | Project status | Major releases, significant feature additions |
-| `mkdocs.yml` | Docs structure | Adding new docs pages, changing site config |
+| `zensical.toml` | Docs structure | Adding new docs pages, changing site config |
 
 ### When Updating Release Process
 
@@ -223,7 +223,7 @@ This matrix documents which files must be updated when specific components chang
 |------|-----------|-------------|
 | `pyproject.toml` | Version numbers | Before every release (version bump required for CI trigger) |
 | `.github/workflows/release.yml` | Build/publish process | Changing build tool, PyPI auth, or release steps |
-| `.github/workflows/docs-deploy.yml` | Docs build | Changing mkdocs config, dependencies, or deployment target |
+| `.github/workflows/docs.yml` | Docs build | Changing Zensical config, dependencies, or deployment target |
 
 ### When Adding Tests (Future)
 

@@ -12,6 +12,8 @@
 
 <p align="right"><i>PyleTree is a simple and fast CLI tool to generate directory tree diagrams.</i></p>
 
+See the [docs](https://davi-furtado.github.io/pyletree)
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -631,6 +633,7 @@ Contributions are welcome! Whether you're reporting bugs, requesting features, o
 ### Code Standards
 
 See [`.github/copilot-instructions.md`](.github/copilot-instructions.md) for detailed conventions:
+
 - Python style, docstring format, type hints
 - CLI argument naming and grouping
 - Testing practices (when implemented)
@@ -642,6 +645,7 @@ Use the [Bug Report](https://github.com/davi-furtado/pyletree/issues/new?templat
 ### Release Process
 
 Version bumps in `pyproject.toml` trigger automatic:
+
 1. Git tag creation (e.g., `v2.7.0`)
 2. Package build (wheel + source dist)
 3. PyPI publication

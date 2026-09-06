@@ -20,31 +20,31 @@ pyletree/
 │   ├── __main__.py         # CLI entry point
 │   ├── cli.py              # CLI argument parsing and handlers
 │   └── pyletree.py         # Core FileTree class and logic
-├── docs/                   # Documentation site (MkDocs)
+├── docs/                   # Documentation site (Zensical)
 │   ├── index.md            # Home page
 │   ├── usage.md            # CLI usage guide
 │   └── api.md              # Python API reference
 ├── .github/
 │   ├── workflows/
 │   │   ├── release.yml     # PyPI release automation
-│   │   └── docs-deploy.yml # Docs deployment
+│   │   └── docs.yml        # Docs deployment
 │   └── agents/             # Custom Copilot agents
 ├── pyproject.toml          # UV project config and dependencies
-├── mkdocs.yml              # Docs site configuration
+├── zensical.toml           # Docs site configuration
 ├── uv.lock                 # Dependency lock file
 └── README.md               # Main readme
 ```
 
 ## Tech Stack
 
-| Component | Technology | Notes |
-|-----------|-----------|-------|
-| **Language** | Python 3.8+ | Broad compatibility for widespread use |
-| **Build** | UV | Modern, fast Python package build tool |
-| **Dependencies** | `pathspec` | Gitignore-style pattern matching |
-| **Docs** | MkDocs + Dracula theme | Auto-deployed on push to main |
-| **Package Distribution** | PyPI | Automated release workflow on version bump |
-| **Docs Hosting** | GitHub Pages | Deployed from `gh-pages` branch |
+| Component                | Technology   | Notes                                      |
+| ------------------------ | ------------ | ------------------------------------------ |
+| **Language**             | Python 3.8+  | Broad compatibility for widespread use     |
+| **Build**                | UV           | Modern, fast Python package build tool     |
+| **Dependencies**         | `pathspec`   | Gitignore-style pattern matching           |
+| **Docs**                 | Zensical     | Auto-deployed on push to main              |
+| **Package Distribution** | PyPI         | Automated release workflow on version bump |
+| **Docs Hosting**         | GitHub Pages | Deployed from `gh-pages` branch            |
 
 ## Build & Run
 
@@ -86,15 +86,16 @@ uv build
 uv sync --group docs
 
 # Serve docs locally (live reload)
-uv run mkdocs serve
+uv run zensical serve
 
 # Build static docs
-uv run mkdocs build
+uv run zensical build
 ```
 
 ## Testing
 
 **Current Status**: The repository does not have an automated test suite configured. All validation occurs through:
+
 - Manual testing during development
 - Integration testing via the live CLI
 - Documentation examples (implicitly tested via docs site)
@@ -104,12 +105,14 @@ uv run mkdocs build
 ## Key Patterns and Conventions
 
 ### CLI Design
+
 - **Entry Point**: `src/pyletree/__main__.py` → calls `cli.main()`
 - **Argument Parsing**: `src/pyletree/cli.py` — uses argparse with custom help formatting
 - **Option Groups**: CLI options are organized by category (General, Modes, Ordering, Size, Display, Ignoring, Depth, Output)
 - **Naming**: Short (`-n`) and long (`--no-pipes`) forms for all flags
 
 ### Python API
+
 - **Main Class**: `FileTree` in `src/pyletree/pyletree.py`
 - **Public Attributes**: All user-configurable parameters are public (e.g., `tree.root_dir`, `tree.dir_only`)
 - **Internal State**: Private attributes prefixed with `_` (e.g., `_tree_deque`, `_size_cache`)
@@ -117,7 +120,9 @@ uv run mkdocs build
 - **Exported**: Only `FileTree` and `__version__` in `__init__.py`
 
 ### Output Formats
+
 The tool supports multiple output modes:
+
 1. **Default tree** — ASCII art with pipes and branches
 2. **No-pipes** (`-n`) — Simplified ASCII without vertical lines
 3. **Text-only** (`-t`) — Plain indentation, no special characters
@@ -125,12 +130,14 @@ The tool supports multiple output modes:
 5. **Dictionary** (`-dt`) — Structured JSON output for programmatic use
 
 ### Filtering & Ignoring
+
 - **Pattern Matching**: Uses `pathspec` library for gitignore-compatible patterns
 - **Include Filters** (`-fi`/`--filter`) — Show only matching files (with parent dirs)
 - **Exclude Patterns** (`-i`/`--ignore`) — Hide matching files/dirs
 - **Gitignore Support** (`-g`/`--gitignore`) — Respect `.gitignore` rules
 
 ### Sorting & Sizing
+
 - **Default Sort**: Alphabetical (case-sensitive)
 - **Size-Based Sort**: `-b` (biggest first) or `-s` (smallest first)
 - **Reverse**: `-r` inverts sort order
@@ -139,6 +146,7 @@ The tool supports multiple output modes:
 ## CI/CD
 
 ### Release Workflow (`.github/workflows/release.yml`)
+
 - **Trigger**: Push to `main` that modifies `pyproject.toml` (version bump)
 - **Steps**:
   1. Extract old and new version from `pyproject.toml`
@@ -148,12 +156,14 @@ The tool supports multiple output modes:
   5. Publish to PyPI via `gh-action-pypi-publish`
 - **Permissions**: Requires `contents: write` for tagging
 
-### Docs Deployment (`.github/workflows/docs-deploy.yml`)
+### Docs Deployment (`.github/workflows/docs.yml`)
+
 - **Trigger**: Push to `main`
-- **Steps**: Builds MkDocs site and deploys to `gh-pages` branch
+- **Steps**: Builds the Zensical site and deploys it to GitHub Pages
 - **Result**: Accessible at https://davi-furtado.github.io/pyletree
 
 ### No PR/Test CI
+
 - ⚠️ Currently no CI for PRs or branch pushes
 - Consider adding: `test.yml` for unit tests, `lint.yml` for code quality
 
@@ -197,33 +207,36 @@ The tool supports multiple output modes:
 ## Common Pitfalls
 
 ### When Adding Features
+
 - **Don't break defaults**: New features should be optional and off by default
 - **Test both CLI and API**: Changes must work via both interfaces
 - **Update docs alongside code**: README, usage, and API docs drift quickly
 - **Gitignore patterns**: Use `pathspec` for pattern matching; test with real `.gitignore` files
 
 ### When Fixing Bugs
+
 - **Preserve public API**: `FileTree` parameters should not change without a major version bump
 - **Size caching**: The `_size_cache` is used for performance; invalidate on parameter changes
 - **Path handling**: Windows and Unix paths are handled differently; test both `/` and `\` separators
 
 ### When Releasing
+
 - **Version must change**: CI only triggers on `pyproject.toml` changes to version
 - **Lock file**: Commit `uv.lock` after dependency changes
 - **PyPI token**: Requires `PYPI_API_TOKEN` secret configured in GitHub repo settings
 
 ## Documentation
 
-The project uses **MkDocs** with the Dracula theme for API documentation and usage guides. The site is built and deployed automatically to GitHub Pages on every push to `main`.
+The project uses **Zensical** for API documentation and usage guides. The site is built and deployed automatically to GitHub Pages on every push to `main`.
 
 **Key Docs Files**:
+
 - `docs/index.md` — Home/overview
 - `docs/usage.md` — CLI usage and examples
 - `docs/api.md` — Python API reference
 
-**Docstring Format**: Google style (enforced by `mkdocstrings`)
-
 To review/update docs:
+
 1. Edit `.md` files in `docs/`
-2. Run `uv run mkdocs serve` to preview locally
+2. Run `uv run zensical serve` to preview locally
 3. Commit and push to `main` — GitHub Actions auto-deploys
