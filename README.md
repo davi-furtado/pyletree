@@ -1,16 +1,15 @@
+<h1 align="center">PyleTree</h1>
+
 <div align="center">
-  <h1>PyleTree</h1>
 
-  <img src="https://img.shields.io/badge/python-3.8%2B-blue">
-  <img src="https://img.shields.io/badge/version-2.7.0-orange">
+![Python](https://img.shields.io/badge/python-%233670A0.svg?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-  <br>
+![Version 2.7.0](https://img.shields.io/badge/version-2.7.0-orange?style=for-the-badge)
+![License MIT](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
-  <img src="https://img.shields.io/badge/license-MIT-green">
-  <img alt="Documentation" src="https://img.shields.io/website?url=https://davi-furtado.github.io/pyletree">
 </div>
 
-<p align="right"><i>PyleTree is a simple and fast CLI tool to generate directory tree diagrams.</i></p>
+<p align="center"><i>PyleTree is a simple and fast CLI tool to generate directory tree diagrams.</i></p>
 
 See the [docs](https://davi-furtado.github.io/pyletree)
 
@@ -19,19 +18,19 @@ See the [docs](https://davi-furtado.github.io/pyletree)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Options](#options)
-  - [General](#general)
-  - [Modes](#modes)
-  - [Ordering](#ordering)
-  - [Size](#size)
-  - [Display](#display)
-  - [Ignoring](#ignoring)
-  - [Depth](#depth)
-  - [Output Formats](#output-formats)
+  + [General](#general)
+  + [Modes](#modes)
+  + [Ordering](#ordering)
+  + [Size](#size)
+  + [Display](#display)
+  + [Ignoring](#ignoring)
+  + [Depth](#depth)
+  + [Output Formats](#output-formats)
 - [Examples](#examples)
 - [Python API](#python-api)
-  - [Basic Usage](#basic-usage)
-  - [Parameters](#parameters)
-  - [Methods](#methods)
+  + [Basic Usage](#basic-usage)
+  + [Parameters](#parameters)
+  + [Methods](#methods)
 - [Sample Output](#sample-output)
 - [Features](#features)
 - [Release History](#release-history)
@@ -276,26 +275,26 @@ print(custom_tree)
 
 All parameters (except `root_dir`) are keyword-only:
 
-| Parameter           | Type                          | Default | Description                                                          |
+| Parameter | Type | Default | Description |
 | ------------------- | ----------------------------- | ------- | -------------------------------------------------------------------- |
-| `root_dir`          | `str \| Path`                 | `'.'`   | Root directory path                                                  |
-| `dir_only`          | `bool`                        | `False` | Show directories only                                                |
-| `files_only`        | `bool`                        | `False` | Show files only                                                      |
-| `dirs_first`        | `bool`                        | `False` | List directories before files                                        |
-| `files_first`       | `bool`                        | `False` | List files before directories                                        |
-| `no_pipes`          | `bool`                        | `False` | Remove vertical pipes between branches                               |
-| `ignore`            | `list[str] \| None`           | `None`  | Gitignore-style patterns to ignore                                   |
-| `filter`            | `list[str] \| None`           | `None`  | Gitignore-style patterns to include only                             |
-| `use_gitignore`     | `bool \| str \| Path \| list` | `False` | Respect `.gitignore` rules. `True` uses current dir, or pass path(s) |
-| `depth_level`       | `int \| None`                 | `None`  | Limit tree depth                                                     |
-| `path_tree`         | `bool`                        | `False` | Display full paths instead of names                                  |
-| `backslashed_paths` | `bool`                        | `False` | Display paths with Windows-style backslashes                         |
-| `text_only`         | `bool`                        | `False` | Plain text mode (no special characters)                              |
-| `text_only_indent`  | `int`                         | `2`     | Indentation spaces for text-only mode                                |
-| `file_size`         | `bool`                        | `False` | Show individual file sizes                                           |
-| `dir_size`          | `bool`                        | `False` | Show cumulative directory sizes                                      |
-| `sort_size`         | `str \| None`                 | `None`  | Sort by size: `'big'` or `'small'`                                   |
-| `reverse`           | `bool`                        | `False` | Reverse alphabetical sort order                                      |
+| `root_dir` | `str \| Path` | `'.'` | Root directory path |
+| `dir_only` | `bool` | `False` | Show directories only |
+| `files_only` | `bool` | `False` | Show files only |
+| `dirs_first` | `bool` | `False` | List directories before files |
+| `files_first` | `bool` | `False` | List files before directories |
+| `no_pipes` | `bool` | `False` | Remove vertical pipes between branches |
+| `ignore` | `list[str] \| None` | `None` | Gitignore-style patterns to ignore |
+| `filter` | `list[str] \| None` | `None` | Gitignore-style patterns to include only |
+| `use_gitignore` | `bool \| str \| Path \| list` | `False` | Respect `.gitignore` rules. `True` uses current dir, or pass path(s) |
+| `depth_level` | `int \| None` | `None` | Limit tree depth |
+| `path_tree` | `bool` | `False` | Display full paths instead of names |
+| `backslashed_paths` | `bool` | `False` | Display paths with Windows-style backslashes |
+| `text_only` | `bool` | `False` | Plain text mode (no special characters) |
+| `text_only_indent` | `int` | `2` | Indentation spaces for text-only mode |
+| `file_size` | `bool` | `False` | Show individual file sizes |
+| `dir_size` | `bool` | `False` | Show cumulative directory sizes |
+| `sort_size` | `str \| None` | `None` | Sort by size: `'big'` or `'small'` |
+| `reverse` | `bool` | `False` | Reverse alphabetical sort order |
 
 ### Methods
 
@@ -519,8 +518,8 @@ Bug fixes & Improvements
 
 - Added `--text-only` alias for the `-t` option.
 - Swapped CLI short aliases for git mode and gitignore mode:
-  - `-git` now maps to `--git`
-  - `-g` now maps to `--gitignore`
+  + `-git` now maps to `--git`
+  + `-g` now maps to `--gitignore`
 - Added optional `N` indentation parameter to `-dt`/`--dict-tree` for CLI display (default 2, 0 for compact output).
 - Updated documentation and examples to reflect the new CLI aliases and `dict-tree` display behavior.
 
@@ -537,8 +536,8 @@ Bug fixes & Improvements
 #### API Changes
 
 - `FileTree` instance attributes are now **public**. All user-configured parameters (`root_dir`, `dir_only`, `files_only`, `dirs_first`, `files_first`, `no_pipes`, `ignore`, `depth_level`, `path_tree`, `text_only`, `text_only_indent`, `file_size`, `dir_size`, `sort_size`, `reverse`) can be accessed directly without the `_` prefix.
-  - Example: `tree.root_dir`, `tree.depth_level`, `tree.dir_only`
-  - Internal attributes (`_tree_deque`, `_size_cache`, `_gitignore_list`, `_filter_cache`, `_ignore_spec`, `_filter_spec`) remain private.
+  + Example: `tree.root_dir`, `tree.depth_level`, `tree.dir_only`
+  + Internal attributes (`_tree_deque`, `_size_cache`, `_gitignore_list`, `_filter_cache`, `_ignore_spec`, `_filter_spec`) remain private.
 
 #### Documentation
 
@@ -554,26 +553,26 @@ Bug fixes & Improvements
 #### Enhancements
 
 - Integrated `-di`/`--dict-indent` into `-dt`/`--dict-tree`.
-  - Example: `pyletree . -dt 4` (4-space indentation)
-  - Example: `pyletree . -dt 0` (compact, no indentation)
+  + Example: `pyletree . -dt 4` (4-space indentation)
+  + Example: `pyletree . -dt 0` (compact, no indentation)
 
 ### 2.2.0
 
 #### Enhancements
 
 - `-dt`/`--dict-tree` | Enhanced Dictionary Output: improved dictionary format with configurable indentation. Now returns `{root: {tree...}}` format and supports custom indentation via `-dt N`/`--dict-tree N` (default 2).
-  - Example: `pyletree . -dt 4` (4-space indentation)
-  - Example: `pyletree . -dt 0` (compact, no indentation)
-  - Better structured output for programmatic use
+  + Example: `pyletree . -dt 4` (4-space indentation)
+  + Example: `pyletree . -dt 0` (compact, no indentation)
+  + Better structured output for programmatic use
 
 ### 2.1.0
 
 #### New Features
 
 - `-fi`/`--filter` | Include Patterns: display only files and directories matching gitignore-style patterns. Supports multiple patterns and maintains tree hierarchy by including parent directories of matching files.
-  - Example: `pyletree . -fi *.py src/`
-  - Smart directory inclusion: shows parent folders even if they don't match the pattern directly
-  - Caching optimization for large directory trees
+  + Example: `pyletree . -fi *.py src/`
+  + Smart directory inclusion: shows parent folders even if they don't match the pattern directly
+  + Caching optimization for large directory trees
 
 ### 2.0.1
 
