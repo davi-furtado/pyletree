@@ -11,7 +11,7 @@
 
 <p align="center"><i>PyleTree is a simple and fast CLI tool to generate directory tree diagrams.</i></p>
 
-See the [docs](https://davi-furtado.github.io/pyletree)
+[See the docs](https://davi-furtado.github.io/pyletree)
 
 ## Table of Contents
 
